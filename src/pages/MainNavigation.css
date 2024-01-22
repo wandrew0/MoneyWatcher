@@ -1,0 +1,46 @@
+.header {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav {
+    width: 100%
+}
+
+.navUserName {
+    /*margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0;*/
+    margin-right: 5px;
+    padding: 0;
+    margin-left: auto;
+    color: green;
+}
+
+.navline {
+    display: flex;
+    margin: 0;
+    margin-top: 5px;
+    width: 100%;
+    /*align-items: stretch;*/
+}
+
+.list {
+    display: flex;
+    margin: 0;
+    gap: 1rem;
+    list-style-type: none;
+}
+
+.list a {
+    text-decoration: none;
+    color: var(--color-primary-400);
+}
+
+.list a:hover,
+.list a.active {
+    color: var(--color-primary-800);
+    text-decoration: underline;
+}
