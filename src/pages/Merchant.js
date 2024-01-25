@@ -17,7 +17,7 @@ const Merchant = ({ active }) => {
                         // console.log(json.data)
                         if (json.status === "success") {
                             setTrans(json.data);
-                        } else if (json.message === "user doesn't exist" || json.message === "not logged in") {
+                        } else if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                             localStorage.setItem("token", "");
                             ctx.setActive1("0");
                         }

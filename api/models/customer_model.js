@@ -77,7 +77,6 @@ customer_schema.path("email").validate(async function (email) {
 customer_schema.pre("save", async function () {
     if (this.isNew) {
         try {
-            Rule.create({ user_uuid: this.uuid });
         } catch (err) {
             throw err;
         }

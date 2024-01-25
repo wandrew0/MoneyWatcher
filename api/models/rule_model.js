@@ -4,51 +4,48 @@ const Merchant = require("./merchant_model");
 const email = require("../utils/email");
 
 const rule_schema = new mongoose.Schema({
-    user_uuid: { type: String, unique: true, index: true, required: true },
-    rules: {
-        categorical: {
-            type: Map,
-            of: {
-                limit: { type: Number, required: true },
-                email: String,
-                days: { type: Number, required: true },
-                category: String,
-                last_triggered: String
-            },
-            default: {}
-        }
-    }
+    user_uuid: { type: String, required: true },
+    name: { type: String, required: true },
+    category: String,
+    limit: { type: Number, required: true },
+    email: String,
+    days: { type: Number, required: true },
+    last_triggered: String
 });
+
+rule_schema.index({ user_uuid: 1, name: 1 }, { unique: true });
 
 rule_schema.methods.alert = async function () {
     try {
-        for (const [name, rule] of this.rules.categorical) {
-            let start = new Date();
-            start.setDate(start.getDate() - rule.days + 1);
-            start = start.toISOString().split('T')[0];
-            start = rule.last_triggered && rule.last_triggered > start ? rule.last_triggered : start;
-            let transactions = await Transaction.find({
-                user_uuid: this.user_uuid,
-                date: { $gte: start }
-            });
-            if (rule.category) {
-                const merchants = (await Merchant.findOne({ user_uuid: req.customer.uuid })).merchants;
-                transactions = transactions.filter((transaction) => merchants.get(transaction.name) === rule.category);
+        let start = new Date();
+        start.setDate(start.getDate() - this.days + 1);
+        start = start.toISOString().split('T')[0];
+        start = this.last_triggered && this.last_triggered > start ? this.last_triggered : start;
+        let transactions = await Transaction.find({
+            user_uuid: this.user_uuid,
+            date: { $gte: start }
+        });
+        if (this.category) {
+            const merchants = {};
+            const merchant_list = await Merchant.find({ user_uuid: req.customer.uuid });
+            for (const merchant of merchant_list) {
+                merchants[merchants.name] = merchant;
             }
-            const total = transactions.reduce((acc, transaction) => acc + parseFloat(transaction.amount), 0);
-            if (total > rule.limit) {
-                email.email(rule.email, "over limit", JSON.stringify({
-                    rule: name,
-                    total: total,
-                    transactions: transactions
-                }, null, 2));
-                let today = new Date();
-                today = today.toISOString().split('T')[0];
-                rule.last_triggered = today;
-                this.rules.set(name, rule);
-            }
+            transactions = transactions.filter((transaction) => merchants[transaction.name].detailed === this.category);
         }
-        await this.save();
+        const total = transactions.reduce((acc, transaction) => acc + parseFloat(transaction.amount), 0);
+        // console.log(total);
+        if (total > this.limit) {
+            email.email(this.email, "over limit", JSON.stringify({
+                rule: this.name,
+                total: total,
+                transactions: transactions
+            }, null, 2));
+            let today = new Date();
+            today = today.toISOString().split('T')[0];
+            this.last_triggered = today;
+            await this.save();
+        }
     } catch (err) {
         throw err;
     }

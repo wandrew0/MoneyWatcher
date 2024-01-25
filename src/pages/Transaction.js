@@ -7,20 +7,51 @@ const Transaction = () => {
     const navigate = useNavigate();
     const [trans, setTrans] = React.useState([]);
     const ctx = React.useContext(MainContext)
-    React.useEffect(() => {
-        // console.log(localStorage.token);
+    const [end, setEnd] = React.useState(new Date().toISOString().split('T')[0]);
+    const [start, setStart] = React.useState(new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0])
+    // React.useEffect(() => {
+    //     getJsonData("/api/v1/transaction", {
+    //         start_date: "2023-01-01",
+    //         end_date: "2025-01-01",
+    //         count: 200
+    //     }).then((d) => {
+    //         d.json()
+    //             .then((json) => {
+    //                 if (json.status === "success") {
+    //                     setTrans(json.data.transactions);
+    //                 } else if (json.message === "user doesn't exist" || json.message === "not logged in") {
+    //                     localStorage.token = "";
+    //                     ctx.setActive1("0");
+    //                 }
+    //             })
+    //     }).catch((err) => {
+    //         // console.log("ERROR(transaction)", err);
+    //     })
+    // }, []);
+    const drawHeader = () => {
+        return (
+            <tr>
+                <th>Store</th>
+                <th>Date</th>
+                <th>Amount($)</th>
+                <th>Category</th>
+            </tr>
+        )
+    }
+    function getTransactions(event) {
+        event.preventDefault();
+        setStart(event.target.start.value);
+        setEnd(event.target.end.value);
         getJsonData("/api/v1/transaction", {
-            start_date: "2023-01-01",
-            end_date: "2025-01-01",
-            count: 200
+            start_date: event.target.start.value,
+            end_date: event.target.end.value,
+            count: 50
         }).then((d) => {
-            // console.log("d=", d);
             d.json()
                 .then((json) => {
-                    // console.log("got transaction json: ", json);
                     if (json.status === "success") {
                         setTrans(json.data.transactions);
-                    } else if (json.message === "user doesn't exist" || json.message === "not logged in") {
+                    } else if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                         localStorage.token = "";
                         ctx.setActive1("0");
                     }
@@ -28,19 +59,6 @@ const Transaction = () => {
         }).catch((err) => {
             // console.log("ERROR(transaction)", err);
         })
-    }, []);
-    const drawHeader = () => {
-        return (
-            <tr>
-                <th>Store</th>
-                <th>Date</th>
-                <th>Amount($)</th>
-                <th>Description</th>
-            </tr>
-        )
-    }
-    function add_transaction() {
-        navigate("/add_transaction");
     }
     const DrawTable = (({ tr }) => {
         // console.log("drawing trying", tr);
@@ -49,7 +67,17 @@ const Transaction = () => {
         return (
             <div>
                 <h1>Transaction Page</h1>
-                <button onClick={add_transaction}>Add</button>
+                <form onSubmit={getTransactions}>
+                    <div>
+                        <label htmlFor="end">end date (required, YYYY-MM-DD)  </label>
+                        <input id="end" name="end" defaultValue={end} />
+                    </div>
+                    <div>
+                        <label htmlFor="start">start date (required, YYYY-MM-DD)  </label>
+                        <input id="start" name="start" defaultValue={start} />
+                    </div>
+                    <button>Get Transactions</button>
+                </form>
                 <table border={1}>
                     <tbody>
                         {drawHeader()}
@@ -64,7 +92,7 @@ const Transaction = () => {
                                         {t.date}
                                     </td>
                                     <td>
-                                        {t.amount.$numberDecimal}
+                                        {t.amount}
                                     </td>
                                     <td>
                                         {t.category.detailed}

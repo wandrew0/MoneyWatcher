@@ -1,8 +1,5 @@
 node_modules
 /api/config.env
-start.sh
-Dockerfile
 docker-compose.yml
-.dockerignore
 .vscode
 .DS_Store

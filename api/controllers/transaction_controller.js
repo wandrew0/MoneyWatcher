@@ -31,6 +31,7 @@ exports.get_transactions = async (req, res) => {
 
         for (const transaction of transactions) {
             transaction["category"] = merchants[transaction.name];
+            transaction["amount"] = parseFloat(transaction.amount)
         }
 
         let has_more = false;

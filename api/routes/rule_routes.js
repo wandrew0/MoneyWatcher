@@ -12,4 +12,8 @@ router
     .route("/create")
     .post(protect, rule_controller.create_rule);
 
+router
+    .route("/delete")
+    .post(protect, rule_controller.delete_rule);
+
 module.exports = router;

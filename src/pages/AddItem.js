@@ -60,7 +60,7 @@ const AddItem = () => {
         for (let i = 0; i < res.length; i++) {
             const json = await res[i].json();
             newmsg.push(<div>{used[i]}: {json.status} {json.status === "fail" ? "- " + json.message : ""}<br /></div>);
-            if (json.message === "user doesn't exist" || json.message === "not logged in") {
+            if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                 localStorage.setItem("token", "");
                 ctx.setActive1("0");
             }
@@ -86,7 +86,7 @@ const AddItem = () => {
                     .then((json) => {
                         // console.log("got json: ", json);
                         setErrmsg(<div>{json.status === "success" ? json.status : json.status + ": " + json.message}</div>);
-                        if (json.message === "user doesn't exist" || json.message === "not logged in") {
+                        if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                             localStorage.setItem("token", "");
                             ctx.setActive1("0");
                         }
