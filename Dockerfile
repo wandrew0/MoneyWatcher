@@ -16,5 +16,4 @@ COPY package*.json .
 RUN npm install
 COPY . .
 RUN chmod u+x start.sh
-VOLUME /moneywatcher-mongo
 CMD ./start.sh
