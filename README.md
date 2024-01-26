@@ -27,9 +27,9 @@ First, make sure that your local mongod process is a replica set. Official instr
 
 Before running any of the javascript code, make sure that your environment variables in `/api/config.env` are set to valid values. Depending on the provider, email may require special setup to work properly. 
 
-`npm run api` for the api on port 3000
+`npm run api` for the api on port 3000 
 
-`npm run frontend` for the frontend on port 3001, which should automatically open your browser. If it doesn't, navigate to http://localhost:3001.
+`npm run frontend` (in a new terminal) for the frontend on port 3001, which should automatically open your browser. If it doesn't, navigate to http://localhost:3001.
 
 ## Run (with Docker)
 The included Dockerfile, start.sh, and following instructions build and run a standalone container with the frontend, api, and MongoDB layers all together. The frontend and api will be exposed, but not MongoDB. 
