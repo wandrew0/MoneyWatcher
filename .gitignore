@@ -3,3 +3,4 @@ node_modules
 docker-compose.yml
 .vscode
 .DS_Store
+/api/config.env
