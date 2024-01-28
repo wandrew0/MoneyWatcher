@@ -38,6 +38,15 @@ Before running any of the javascript code, make sure that your environment varia
 
 The included Dockerfile, start.sh, and following instructions build and run a standalone container with the frontend, api, and MongoDB layers all together. The frontend and api will be exposed, but not MongoDB. 
 
+To build and run MoneyWatcher in a Docker container locally, please follow the steps below.
+
+`cp api/config.env.template api/config.env` 
+
+change the appropriate configuration values in config.env according to your local environment, including PLAID_CLIENT_ID and PLAID_SECRET
+
+
 `docker build . --tag moneywatcher` builds the image and tags it with moneywatcher:latest
 
 `docker run -d -p 3000:3000 -p 3001:3001 moneywatcher:latest` runs the image and exposes the api and frontend ports
+
+You will be able to connect to localhost:3000 for the UI and localhost:3001 for the API backend.
