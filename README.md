@@ -66,4 +66,4 @@ change the appropriate configuration values in config.env according to your loca
 
 `docker run -d -p 3000:3000 -p 3001:3001 moneywatcher:latest` runs the image and exposes the api and frontend ports
 
-You will be able to connect to localhost:3000 for the UI and localhost:3001 for the API backend.
+You will be able to connect to localhost:3001 for the UI and localhost:3000 for the API backend.
