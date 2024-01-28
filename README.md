@@ -14,7 +14,7 @@ MoneyWatcher is a web application that tracks and monitors a user's bank transac
   Users can define monitoring rules with MoneyWatcher. A rule specifies the spending limit L within a period of X number of days and an optional category O. Whenever MoneyWatcher receives new bank transactions, it checks against the rules that the user has defined. If any rule is violated, it triggers an email alert and displays it in the UI.
 
 ## Architecture
-MoneyWatcher is built with the MERN stack. The backend server is implemented using Node.js and Express.js. It manages data in MongoDB and exposes its functionalities through REST API. I built a simple React-based UI to communicate with the server.
+MoneyWatcher is built with the MERN stack. The backend server is implemented using Node.js and Express.js. It manages data in MongoDB and exposes its functionalities through REST API. I wrote a simple React-based UI to communicate with the server.
 
 ## Dependencies
 without Docker: Node.js, npm, and MongoDB
