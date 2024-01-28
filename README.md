@@ -1,4 +1,21 @@
-# moneywatcher
+# MoneyWatcher
+## Description
+MoneyWatcher is a web application that tracks and monitors a user's bank transactions by integrating with Plaid API in the backend. When a user first signs up with MoneyWatcher, it redirects the user to Plaid to sign in to the user's bank accounts and obtain the user's bank access token. After that, MoneyWatcher calls Plaid's sync API to periodically pull account transactions into MoneyWatcher's DB and start to monitor the user's bank transactions.
+* merchants
+
+  A charge transaction has a merchant name and a personal finance category associated with the merchant name. MoneyWatcher extracts these fields (merchant name, merchant category) to create the Merchant object for the user. Users can see all the merchants' information from which they have purchased. Additionally, users can create a new category or modify an existing category that a merchant belongs to.
+* reports
+
+  MoneyWatcher supports two types of transaction reports. 
+  * retrieve all transactions from date X to date Y. 
+  * retrieve all transactions from date X to date Y for merchant category Z.
+* rules and alerts
+
+  Users can define monitoring rules with MoneyWatcher. A rule specifies the spending limit L within a period of X number of days and an optional category O. Whenever MoneyWatcher receives new bank transactions, it checks against the rules that the user has defined. If any rule is violated, it triggers an email alert and displays it in the UI.
+
+## Architecture
+MoneyWatcher is built with the MERN stack. The backend server is implemented using Node.js and Express.js. It manages data in MongoDB and exposes its functionalities through REST API. I wrote a simple React-based UI to communicate with the server.
+
 ## Dependencies
 without Docker: Node.js, npm, and MongoDB
 
@@ -6,7 +23,7 @@ with Docker: Docker
 ## Build
 `npm install`
 ## Config
-The backend code references environment variables set in `/api/config.env`, but they are not included in this repo as they include access tokens and other sensitive data. If you wish to run moneywatcher locally, please make a file `/api/config.env` and copy paste the following, making sure to fill out the required variables. 
+The backend code references environment variables set in `api/config.env.template`. If you wish to run moneywatcher locally, please `cp api/config.env.template api/config.env` and set the appropriate values in config.env.
 ```
 NODE_ENV=development # not really used
 PORT=3000 # api port
@@ -38,6 +55,15 @@ Before running any of the javascript code, make sure that your environment varia
 
 The included Dockerfile, start.sh, and following instructions build and run a standalone container with the frontend, api, and MongoDB layers all together. The frontend and api will be exposed, but not MongoDB. 
 
+To build and run MoneyWatcher in a Docker container locally, please follow the steps below.
+
+`cp api/config.env.template api/config.env` 
+
+change the appropriate configuration values in config.env according to your local environment, including PLAID_CLIENT_ID and PLAID_SECRET
+
+
 `docker build . --tag moneywatcher` builds the image and tags it with moneywatcher:latest
 
 `docker run -d -p 3000:3000 -p 3001:3001 moneywatcher:latest` runs the image and exposes the api and frontend ports
+
+You will be able to connect to localhost:3000 for the UI and localhost:3001 for the API backend.
