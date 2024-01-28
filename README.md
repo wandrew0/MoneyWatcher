@@ -1,4 +1,4 @@
-# moneywatcher
+# MoneyWatcher
 ## Description
 MoneyWatcher is a web application that tracks and monitors a user's bank transactions by integrating with Plaid API in the backend. When a user first signs up with MoneyWatcher, it redirects the user to Plaid to sign in to the user's bank accounts and obtain the user's bank access token. After that, MoneyWatcher calls Plaid's sync API to periodically pull account transactions into MoneyWatcher's DB and start to monitor the user's bank transactions.
 * merchants
