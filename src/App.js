@@ -13,7 +13,6 @@ import AddRule from "./pages/AddRule"
 import AddItem from "./pages/AddItem"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-
 const router = createBrowserRouter([
   {
     path: '/', element: <RootLayout />,

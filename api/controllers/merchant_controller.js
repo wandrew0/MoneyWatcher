@@ -19,20 +19,14 @@ exports.get_merchants = async (req, res) => {
 
 exports.update_merchants = async (req, res) => {
     try {
-        const merchants = await Merchant.findOneAndUpdate({ user_uuid: req.customer.uuid }, {
-            $set: {
-                [`merchants.${req.body["merchant"]}`]: {
-                    primary: req.body["primary"],
-                    detailed: req.body["detailed"]
-                }
-            }
-        }, {
-            new: true
-        });
+        const merchant = await Merchant.findOne({ user_uuid: req.customer.uuid, name: req.body.merchant });
+        merchant.primary = req.body.primary;
+        merchant.detailed = req.body.detailed;
+        await merchant.save();
 
         res.status(200).json({
             status: "success",
-            data: merchants["merchants"]
+            data: merchant
         });
     } catch (err) {
         console.log(err);

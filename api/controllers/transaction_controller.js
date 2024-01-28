@@ -25,13 +25,21 @@ exports.get_transactions = async (req, res) => {
         const merchant_list = await Merchant.find({ user_uuid: req.customer.uuid });
 
         const merchants = {};
-        for(const merchant of merchant_list) {
+        for (const merchant of merchant_list) {
             merchants[merchant.name] = merchant;
         }
 
-        for (const transaction of transactions) {
+        for (let i = 0; i < transactions.length; i++) {
+            const transaction = transactions[i];
+            const category = merchants[transaction.name];
+            if (req.body.category && req.body.category !== category.detailed) {
+                transactions.splice(i, 1);
+                i--;
+                continue;
+            }
+
             transaction["category"] = merchants[transaction.name];
-            transaction["amount"] = parseFloat(transaction.amount)
+            transaction["amount"] = parseFloat(transaction.amount);
         }
 
         let has_more = false;

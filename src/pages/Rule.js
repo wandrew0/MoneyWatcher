@@ -7,7 +7,7 @@ const Rule = () => {
     const navigate = useNavigate();
     const [rules, setRules] = React.useState([]);
     const ctx = React.useContext(MainContext)
-    function reload() {
+    function refresh() {
         getJsonData("/api/v1/rule", {})
             .then((d) => {
                 // console.log("d=", d);
@@ -21,7 +21,7 @@ const Rule = () => {
             })
     }
     React.useEffect(() => {
-        reload();
+        refresh();
     }, []);
     const drawHeader = () => {
         return (
@@ -47,7 +47,7 @@ const Rule = () => {
         }).then((r) => {
             r.json()
                 .then((json) => {
-                    reload();
+                    refresh();
                 })
         }).catch((err) => {
             // console.log(err);
@@ -59,7 +59,7 @@ const Rule = () => {
             name: event.target.parentNode.parentNode.dataset.name
         }).then((r) => {
             // console.log(r);
-            reload();
+            refresh();
         }).catch((err) => {
             // console.log(err);
         })
@@ -80,7 +80,6 @@ const Rule = () => {
                         <td>{r.email}</td>
                         <td>{r.last_triggered}</td>
                         <td>
-                            <button>modify (not implemented)</button>
                             <button onClick={deleteRule}>delete</button>
                         </td>
                     </tr>

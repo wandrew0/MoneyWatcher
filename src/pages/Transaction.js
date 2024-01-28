@@ -2,6 +2,7 @@ import { jsonFetch, buildIpAddress, getJsonData } from "../components/common";
 import React from "react";
 import MainContext from "./MainContext"
 import { useNavigate } from 'react-router-dom'
+import Categories from "../resources/Categories.js"
 
 const Transaction = () => {
     const navigate = useNavigate();
@@ -28,6 +29,21 @@ const Transaction = () => {
     //         // console.log("ERROR(transaction)", err);
     //     })
     // }, []);
+    const drawDropdown = () => {
+        return <div>
+            <label for="select_category">Category: </label>
+            <select id="select_category">
+                <option>Any</option>
+                {Object.entries(Categories).map(([k, v]) => {
+                    return <optgroup label={k}>
+                        {v.map((cat) => {
+                            return <option data-primary={cat[0]} data-detailed={cat[1]} value={cat[1]}>{cat[1].split(cat[0] + "_")[1]}</option>
+                        })}
+                    </optgroup>
+                })}
+            </select>
+        </div>
+    }
     const drawHeader = () => {
         return (
             <tr>
@@ -42,10 +58,13 @@ const Transaction = () => {
         event.preventDefault();
         setStart(event.target.start.value);
         setEnd(event.target.end.value);
+        const dropdown = event.target.select_category;
+        const selected = dropdown[dropdown.selectedIndex];
         getJsonData("/api/v1/transaction", {
             start_date: event.target.start.value,
             end_date: event.target.end.value,
-            count: 50
+            count: 50,
+            category: selected.dataset.detailed
         }).then((d) => {
             d.json()
                 .then((json) => {
@@ -76,6 +95,7 @@ const Transaction = () => {
                         <label htmlFor="start">start date (required, YYYY-MM-DD)  </label>
                         <input id="start" name="start" defaultValue={start} />
                     </div>
+                    {drawDropdown()}
                     <button>Get Transactions</button>
                 </form>
                 <table border={1}>

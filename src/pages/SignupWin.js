@@ -60,7 +60,7 @@ const SignupWin = () => {
               ctx.setActive1("1");
               setErrmsg(<p>Success! Next step:  <Link to="/add_item">add bank accounts</Link></p>);
             } else {
-              setErrmsg("error");
+              setErrmsg(json.message);
             }
           })
       }).catch((err) => {
