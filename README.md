@@ -1,4 +1,6 @@
 # moneywatcher
+## Description
+MoneyWatcher is a web application that 
 ## Dependencies
 without Docker: Node.js, npm, and MongoDB
 
@@ -6,7 +8,7 @@ with Docker: Docker
 ## Build
 `npm install`
 ## Config
-The backend code references environment variables set in `/api/config.env`, but they are not included in this repo as they include access tokens and other sensitive data. If you wish to run moneywatcher locally, please make a file `/api/config.env` and copy paste the following, making sure to fill out the required variables. 
+The backend code references environment variables set in `api/config.env.template`. If you wish to run moneywatcher locally, please `cp api/config.env.template api/config.env` and set the appropriate values in config.env.
 ```
 NODE_ENV=development # not really used
 PORT=3000 # api port
