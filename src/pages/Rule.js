@@ -13,7 +13,7 @@ const Rule = () => {
                 // console.log("d=", d);
                 d.json()
                     .then((json) => {
-                        console.log("got rule json: ", json);
+                        // console.log("got rule json: ", json);
                         setRules(json.data)
                     })
             }).catch((err) => {

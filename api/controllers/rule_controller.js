@@ -15,7 +15,7 @@ exports.get_rules = async (req, res) => {
             message: err.message
         });
     }
-}
+};
 
 exports.create_rule = async (req, res) => {
     try {
@@ -37,11 +37,14 @@ exports.create_rule = async (req, res) => {
             message: err.message
         });
     }
-}
+};
 
 exports.delete_rule = async (req, res) => {
     try {
-        await Rule.deleteOne({ user_uuid: req.customer.uuid, name: req.body.name });
+        await Rule.deleteOne({
+            user_uuid: req.customer.uuid,
+            name: req.body.name
+        });
 
         res.status(204).json({
             status: "success"
@@ -53,14 +56,14 @@ exports.delete_rule = async (req, res) => {
             message: err.message
         });
     }
-}
+};
 
 exports.update_rule = async (req, res) => {
     try {
         res.status(200).json({
             stauts: "success",
             data: "unimplemented"
-        })
+        });
     } catch (err) {
         console.log(err);
         res.status(400).json({
@@ -68,4 +71,4 @@ exports.update_rule = async (req, res) => {
             mesage: err.message
         });
     }
-}
+};

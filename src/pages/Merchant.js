@@ -1,12 +1,14 @@
 import { jsonFetch, buildIpAddress, getJsonData } from "../components/common";
 import React from "react";
 import MainContext from "./MainContext"
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Categories from "../resources/Categories.js"
 
 const Merchant = ({ active }) => {
     const navigate = useNavigate();
-    const [trans, setTrans] = React.useState({});
+    const [trans, setTrans] = React.useState([]);
+    const [cats, setCats] = React.useState({});
+    const [selected, setSelected] = React.useState("");
     const ctx = React.useContext(MainContext)
     React.useEffect(() => {
         refresh();
@@ -29,6 +31,32 @@ const Merchant = ({ active }) => {
             }).catch((err) => {
                 console.log("ERROR(merchant)", err);
             })
+
+        getJsonData("/api/v1/category/get_custom", {})
+            .then((d) => {
+                // console.log("d=", d);
+                d.json()
+                    .then((json) => {
+                        // console.log(json);
+                        // console.log("got merchant json: ", json);
+                        // console.log(json.data)
+                        if (json.status === "success") {
+                            const cats = {};
+                            cats.custom = json.data.custom;
+                            cats.plaid = {};
+                            for (const pr in Categories) {
+                                // console.log(Categories[pr]);
+                                cats.plaid[pr] = Categories[pr].map((l) => l[1]);
+                            }
+                            setCats(cats);
+                        } else if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
+                            localStorage.setItem("token", "");
+                            ctx.setActive1("0");
+                        }
+                    })
+            }).catch((err) => {
+                console.log("ERROR(categories)", err);
+            })
     }
     const drawHeader = () => {
         return (
@@ -36,20 +64,30 @@ const Merchant = ({ active }) => {
                 <th>Name</th>
                 <th>Primary</th>
                 <th>Detailed</th>
+                <th>Select for updating</th>
             </tr>
         )
     }
-    const DrawDropdown = () => {
+    const drawDropdown = () => {
+        if (Object.keys(cats).length === 0) {
+            return;
+        }
         return <div>
             <label for="select_category">New Category: </label>
             <select id="select_category">
-                {Object.entries(Categories).map(([k, v]) => {
+                {Object.entries(cats.plaid).map(([k, v]) => {
                     return <optgroup label={k}>
                         {v.map((cat) => {
-                            return <option data-primary={cat[0]} data-detailed={cat[1]} value={cat[1]}>{cat[1].split(cat[0] + "_")[1]}</option>
+                            // console.log(cat);
+                            return <option data-primary={k} data-detailed={cat} value={cat}>{cat.split(k + "_")[1]}</option>
                         })}
                     </optgroup>
                 })}
+                <optgroup label="CUSTOM">
+                    {cats.custom.map((cat) => {
+                        return <option data-primary="CUSTOM" data-detailed={cat} value={cat}>{cat}</option>
+                    })}
+                </optgroup>
             </select>
         </div>
     }
@@ -70,19 +108,15 @@ const Merchant = ({ active }) => {
             //
         })
     }
+    function change(event) {
+        event.preventDefault();
+        setSelected(event.target.value);
+    }
     const DrawTable = (({ tr }) => {
         const loading = !Array.isArray(tr);
         return (
             <div>
-                <h1>Merchant Page</h1>
-                <form onSubmit={modify_merchant}>
-                    <div>
-                        <label htmlFor="name">merchant name</label>
-                        <input id="name" name="name" />
-                    </div>
-                    <DrawDropdown />
-                    <button>Modify</button>
-                </form>
+
                 <table border={1}>
                     <tbody>
                         {drawHeader()}
@@ -93,6 +127,11 @@ const Merchant = ({ active }) => {
                                         <td>{t.name}</td>
                                         <td>{t.primary}</td>
                                         <td>{t.detailed}</td>
+                                        <td>
+                                            <button onClick={() => {
+                                                setSelected(t.name);
+                                            }}>Select</button>
+                                        </td>
                                     </tr>
                                 )
                             })
@@ -109,6 +148,18 @@ const Merchant = ({ active }) => {
         )
     return (
         <div>
+            <h1>Merchant Page</h1>
+            <Link to="/add_category">add a custom category</Link>
+            <br />
+            <br />
+            <form onSubmit={modify_merchant}>
+                <div>
+                    <label htmlFor="name">merchant name</label>
+                    <input id="name" name="name" value={selected} onChange={change} />
+                </div>
+                {drawDropdown()}
+                <button>Modify</button>
+            </form>
             <DrawTable tr={trans} />
         </div>
     )

@@ -2,7 +2,6 @@ import { jsonFetch, buildIpAddress, getJsonData } from "../components/common";
 import React from "react";
 import MainContext from "./MainContext"
 import { useNavigate } from 'react-router-dom'
-import Categories from "../resources/Categories.js"
 
 const Transaction = () => {
     const navigate = useNavigate();
@@ -10,37 +9,48 @@ const Transaction = () => {
     const ctx = React.useContext(MainContext)
     const [end, setEnd] = React.useState(new Date().toISOString().split('T')[0]);
     const [start, setStart] = React.useState(new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0])
-    // React.useEffect(() => {
-    //     getJsonData("/api/v1/transaction", {
-    //         start_date: "2023-01-01",
-    //         end_date: "2025-01-01",
-    //         count: 200
-    //     }).then((d) => {
-    //         d.json()
-    //             .then((json) => {
-    //                 if (json.status === "success") {
-    //                     setTrans(json.data.transactions);
-    //                 } else if (json.message === "user doesn't exist" || json.message === "not logged in") {
-    //                     localStorage.token = "";
-    //                     ctx.setActive1("0");
-    //                 }
-    //             })
-    //     }).catch((err) => {
-    //         // console.log("ERROR(transaction)", err);
-    //     })
-    // }, []);
+    const [cats, setCats] = React.useState({});
+    React.useEffect(() => {
+        getJsonData("/api/v1/category/get", {})
+            .then((d) => {
+                // console.log("d=", d);
+                d.json()
+                    .then((json) => {
+                        // console.log(json);
+                        // console.log("got merchant json: ", json);
+                        // console.log(json.data)
+                        if (json.status === "success") {
+                            setCats(json.data);
+                        } else if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
+                            localStorage.setItem("token", "");
+                            ctx.setActive1("0");
+                        }
+                    })
+            }).catch((err) => {
+                console.log("ERROR(categories)", err);
+            })
+    }, [])
     const drawDropdown = () => {
+        if (Object.keys(cats).length === 0) {
+            return;
+        }
         return <div>
-            <label for="select_category">Category: </label>
+            <label for="select_category">New Category: </label>
             <select id="select_category">
-                <option>Any</option>
-                {Object.entries(Categories).map(([k, v]) => {
+                <option>ANY</option>
+                {Object.entries(cats.plaid).map(([k, v]) => {
                     return <optgroup label={k}>
                         {v.map((cat) => {
-                            return <option data-primary={cat[0]} data-detailed={cat[1]} value={cat[1]}>{cat[1].split(cat[0] + "_")[1]}</option>
+                            // console.log(cat);
+                            return <option data-primary={k} data-detailed={cat} value={cat}>{cat.split(k + "_")[1]}</option>
                         })}
                     </optgroup>
                 })}
+                <optgroup label="CUSTOM">
+                    {cats.custom.map((cat) => {
+                        return <option data-primary="CUSTOM" data-detailed={cat} value={cat}>{cat}</option>
+                    })}
+                </optgroup>
             </select>
         </div>
     }

@@ -49,6 +49,9 @@ item_schema.methods.sync = async function () {
             this.cursor = "LOCK " + new mongoose.Types.ObjectId(); // unique
             await this.save({ session }); // begin lock
             const institution_id_accounts = await plaid.get_accounts(this.access_token);
+            if (institution_id_accounts["error_type"]) {
+                throw new Error(institution_id_accounts["error_message"]);
+            }
             const institution_name = await plaid.get_institution_name(institution_id_accounts["item"]["institution_id"]);
             this.institution_id = institution_id_accounts["item"]["institution_id"];
             this.institution_name = institution_name["institution"]["name"];

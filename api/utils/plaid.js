@@ -52,6 +52,8 @@ exports.get_accounts = async (token) => {
             body: data
         })).toString());
 
+        // console.log(accounts);
+
         return accounts
     } catch (err) {
         throw err;
@@ -126,3 +128,5 @@ exports.get_all_transactions = async (token, cursor) => {
         throw err;
     }
 }
+
+exports.get_institution
