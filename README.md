@@ -25,7 +25,7 @@ with Docker: Docker
 ## Config
 The backend code references environment variables set in `api/config.env.template`. If you wish to run moneywatcher locally, please `cp api/config.env.template api/config.env` and set the appropriate values in config.env.
 ```
-NODE_ENV=development # not really used
+NODE_ENV=development # 
 PORT=3000 # api port
 VERSION=v1
 DATABASE=mongodb://localhost:27017/moneywatcher # mongodb address
