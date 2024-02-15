@@ -42,9 +42,31 @@ EMAIL_PASSWORD=OMITTED # some services are finnicky and require special setup, n
 ## Run (no Docker)
 **WARNING:** MoneyWatcher will NOT run properly without environment variables PLAID_CLIENT_ID and PLAID_SECRET set in `/api/config.env` 
 
-First, make sure that your local mongod process is a replica set. Official instructions are [here](https://www.mongodb.com/docs/manual/tutorial/convert-standalone-to-replica-set). Depending on your local setup (ie using `brew services` instead of `mongod` directly), it can require other methods. 
+Below are instructions to run on MacOS.
+* install MongoDB.
+  ```
+  brew tap mongodb/brew
+  brew install mongodb-community
+  ```
+* configure mongod to run as a replica set (needed for transactions). add the following lines to mongod.conf
+  ```
+  replication:
+    replSetName: rs0
+  ```
+* start and initialize mongodb replica
+  ```
+    brew services start mongodb/brew/mongodb-community
+    mongosh
+    use admin
+    rs.initiate()
+  ```
+  subsequent start/restart can use regular brew services commands.
 
-Before running any of the javascript code, make sure that your environment variables in `/api/config.env` are set to valid values. Depending on the provider, email may require special setup to work properly. 
+
+
+
+
+Before running any of the javascript code, make sure that your environment variables in `api/config.env` are set to valid values. Depending on the provider, email may require special setup to work properly. 
 
 `npm run api` for the api on port 3000 
 
