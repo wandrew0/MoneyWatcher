@@ -68,32 +68,34 @@ const SignupWin = () => {
       })
   }
   return (
-    <div>
+    <div >
       <form onSubmit={handleSubmit}>
-        <h2>Sign Up</h2>
+        <h2 className="blueHeader">Sign Up</h2>
         <div>
-          <label htmlFor="name">First Name</label>
-          <input id="firstname" type="name" name="firstname" value={firstName} onChange={firstNameChange} required />
+          <label className="labelText" htmlFor="name">First Name</label>
+          <input  id="firstname" type="name" name="firstname" value={firstName} onChange={firstNameChange} required />
         </div>
         <div>
-          <label htmlFor="name">Last Name</label>
+          <label className="labelText" htmlFor="name">Last Name</label>
           <input id="lastname" type="name" name="lastname" value={lastName} onChange={lastNameChange} required />
         </div>
         <div>
-          <label htmlFor="email">email</label>
+          <label className="labelText" htmlFor="email">email</label>
           <input id="email" type="email" name="email" onChange={emailChange} value={email} required />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label className="labelText" htmlFor="password">Password</label>
           <input id="password" type="password" name="password" value={password} onChange={passwordChange} required />
         </div>
         <p className="form-actions">
-          <button className="button button-flat" onClick={resetHandle}>
+          <div className="button-container">
+          <button className="centered-button" onClick={resetHandle}>
             Reset
           </button>
-          <button type="submit" className="button">
+          <button type="submit" className="centered-button">
             Sign Up
           </button>
+          </div>
         </p>
       </form>
       {errmsg !== "" && (<p>{errmsg}</p>)}

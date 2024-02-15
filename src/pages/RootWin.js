@@ -1,4 +1,5 @@
 import React from "react";
+import '../css/styles.css';
 import { Link } from "react-router-dom";
 //import LoginWin from "./LoginWin";
 
@@ -47,7 +48,7 @@ const RootWin = () => {
     };
     const InactiveWin = () => {
         return (
-            <p>
+            <p className="leftAlignedText">
                 Please <Link to="/login">log in</Link> or{" "}
                 <Link to="/signup">sign up!</Link>
             </p>
@@ -55,7 +56,17 @@ const RootWin = () => {
     };
     return (
         <div>
-            <h1>Welcome to MoneyWatcher</h1>
+            <h1 className="blueHeader">
+                Welcome to MoneyWatcher Demo </h1>
+            <p className="leftAlignedText">
+                This web server is created to demo MoneyWatcher's features.
+                You can sign up or log in. For the demo, we have pre-created
+                several test bank accounts with Plaid sandbox server. You can 
+                choose one or several test bank accounts as your own to try out
+                MoneyWatcher. (Using the Add Bank Account(s)). After that, with
+                Transaction tab, you can query your recent bank charge transactions.
+
+            </p>
             {!!active && ActiveWin()}
             {!active && InactiveWin()}
         </div>
