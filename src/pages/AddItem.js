@@ -3,6 +3,7 @@ import { getJsonData, buildIpAddress } from "../components/common";
 import { Link } from 'react-router-dom'
 import MainContext from "./MainContext"
 import "./AddItem.css"
+import "../css/styles.css"
 
 const AddItem = () => {
     const [errmsg, setErrmsg] = React.useState([]);
@@ -110,9 +111,11 @@ const AddItem = () => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <h2>Plaid Access Token</h2>
-                <p>
-                    This MoneyWatcher demo server has created several test bank accounts in the Plaid sandbox environment with fake transaction data. Please select one or more from the following to be used as your bank accounts.
+                <h2 className="blueHeader">Plaid Testing Bank Accounts</h2>
+                <p className="leftAlignedText">
+                    This MoneyWatcher demo server has created several testing bank accounts in the Plaid sandbox environment.
+                    The testing bank accounts have simulated transactions. Please select one or more from the following accounts
+                    to be used for demo.
                 </p>
                 {/* <div>
                     <label htmlFor="token">Access token: </label>
@@ -132,12 +135,14 @@ const AddItem = () => {
                     {tokens.map((token, index) => {
                         return <li key={index}>
                             <input type="checkbox" id={`token${index}`} value={token.token} onClick={handleCheck} />
-                            <label htmlFor={`token${index}`}>{"Bank: " + token.bank}<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</>{token.token}</label>
+                            <label className="labelTextBankAccount" htmlFor={`token${index}`}>{token.bank}: XXXX{token.token.slice(-5)}</label>
                         </li>
                     })}
                 </ul>
-                <button type="reset" className="button button-flat"> Reset</button>
-                <button type="submit" className="button">Add Selected</button>
+                <div className="button-container">
+                <button type="reset" className="centered-button"> Reset</button>
+                <button type="submit" className="centered-button">Add Selected</button>
+                </div>
             </form>
             {errmsg}
         </div>

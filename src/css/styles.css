@@ -16,6 +16,14 @@
     padding: 15px; /* Adds padding around the text */
     box-sizing: border-box; /* Includes padding in the total width */
 }
+.labelTextBankAccount {
+  display: inline-block;
+  font-family: monospace;
+  width: 500px;
+  margin-left: 15px;
+  padding: 15px;
+  box-sizing: border-box;
+}
 /* Container to center the buttons */
 .button-container {
   text-align: center; /* Centers the content horizontally */

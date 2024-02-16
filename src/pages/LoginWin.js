@@ -1,4 +1,6 @@
 import React from "react";
+import ErrorBox from "./ErrorBox";
+import '../css/styles.css'; 
 import { Link, useNavigate } from 'react-router-dom'
 import { jsonFetch, buildIpAddress, setActive } from "../components/common";
 import MainContext from "./MainContext"
@@ -28,6 +30,10 @@ const LoginWin = () => {
     setEmail(email_0);
     setPassword(password_0);
   }
+  function handleErrorClose()  {
+    setErrmsg(''); // Clear the error message, hiding the error box
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     const fd = new FormData(event.target);
@@ -57,7 +63,7 @@ const LoginWin = () => {
               setErrmsg("");
               navigate("/");
             } else {
-              setErrmsg("Login Error");
+              setErrmsg("Login Error: Invalid Username and/or Password");
             }
           })
       }).catch((err) => {
@@ -69,7 +75,7 @@ const LoginWin = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2 className="blueHeader">Login</h2>
         {/* <div>
             <label htmlFor="name">First Name</label>
             <input id="firstname" type="name" name="firstname" value={firstName} onChange={firstNameChange} required/>
@@ -79,24 +85,26 @@ const LoginWin = () => {
             <input id="lastname" type="name" name="lastname" value={lastName} onChange={lastNameChange} required/>
           </div> */}
         <div>
-          <label htmlFor="email">email</label>
+          <label className="labelText" htmlFor="email">email</label>
           <input id="email" type="email" name="email" onChange={emailChange} value={email} />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label className="labelText" htmlFor="password">Password</label>
           <input id="password" type="password" name="password" value={password} onChange={passwordChange} required />
         </div>
         <p className="form-actions">
-          <button className="button button-flat" onClick={resetHandle}>
-            Reset
-          </button>
-          <button type="submit" className="button">
-            Log In
-          </button>
+          <div className="button-container">
+            <button className="centered-button" onClick={resetHandle}>
+              Reset
+            </button>
+            <button type="submit" className="centered-button">
+              Log In
+            </button>
+          </div>
         </p>
       </form>
-      <Link to='/signup'>Sign Up</Link>
-      {errmsg !== "" && (<p>{errmsg}</p>)}
+
+      {errmsg !== "" && (<ErrorBox errorMessage={errmsg} onClose={handleErrorClose} />)}
     </div>
   )
 }
