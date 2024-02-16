@@ -18,6 +18,15 @@
     margin-left: auto;
     color: green;
 }
+.navUserName2 {
+    padding: 10px 20px; /* Adds some padding around the text for a comfortable click area */
+    border: 1px solid #ccc; /* Adds a light border for definition */
+    background-color: #f0f0f0; /* Light background color for the button */
+    color : rgb(76, 0, 255);
+    margin-right : 20px;
+    margin-left : auto;
+}
+  
 
 .navline {
     display: flex;

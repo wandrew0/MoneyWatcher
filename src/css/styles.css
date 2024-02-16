@@ -12,8 +12,8 @@
 .labelText {
   display: inline-block; /* Makes the label respect the width property */
     font-family: monospace; /* Ensures each character has the same width */
-    width: 150px; /* Adjust this based on the average width of a character in your chosen font */
-    padding: 5px; /* Adds padding around the text */
+    width: 280px; /* Adjust this based on the average width of a character in your chosen font */
+    padding: 15px; /* Adds padding around the text */
     box-sizing: border-box; /* Includes padding in the total width */
 }
 /* Container to center the buttons */
@@ -22,6 +22,7 @@
   display: flex; /* Use flexbox to layout the buttons */
   justify-content: center; /* Center the buttons horizontally in the flex container */
   gap: 10px; /* Adds some space between the two buttons */
+  margin-top : 20px
 }
 
 /* Style for the buttons */

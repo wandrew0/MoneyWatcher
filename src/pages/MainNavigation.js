@@ -15,11 +15,11 @@ const MainNavigation = ({ active }) => {
     }
     const UserName = () => {
         const name =
-            "Hello " +
+            "Hello, " +
             localStorage.getItem("first_name") +
             " " +
             localStorage.getItem("last_name");
-        return <span className="navUserName">{name}</span>;
+        return <span className="navUserName2">{name}</span>;
     };
     return (
         <div>
