@@ -1,15 +1,27 @@
 import React from "react";
+import ErrorBoxWithLink from "./ErrorBoxWithLink";
 import { getJsonData, buildIpAddress } from "../components/common";
 import { Link } from 'react-router-dom'
 import MainContext from "./MainContext"
 import "./AddItem.css"
 import "../css/styles.css"
+import { set } from "mongoose";
 
 const AddItem = () => {
     const [errmsg, setErrmsg] = React.useState([]);
     const ctx = React.useContext(MainContext);
     const [selected, setSelected] = React.useState(new Set());
     const [tokens, setTokens] = React.useState([]);
+    console.log("AddItem");
+    function handleErrorClose()  {
+        console.log('reset');
+        setErrmsg(''); // Clear the error message, hiding the error box
+    }
+    if (ctx.active === "0") {
+        return (
+            <ErrorBoxWithLink errorMessage='You are not signed in.' link='/login' linkText='Sign In' />
+        )
+    }
     React.useEffect(() => {
         setTokens([{
             bank: "loading",
@@ -23,6 +35,9 @@ const AddItem = () => {
             });
         })
     }, []);
+    function handleErrorClose()  {
+        setErrmsg(''); // Clear the error message, hiding the error box
+      };
     async function listSubmit(event) {
         event.preventDefault();
         const newmsg = [];
@@ -83,7 +98,7 @@ const AddItem = () => {
                 // console.log("d=", d);
                 d.json()
                     .then((json) => {
-                        // console.log("got json: ", json);
+                        console.log("got json: ", json);
                         setErrmsg(<div>{json.status === "success" ? json.status : json.status + ": " + json.message}</div>);
                         if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                             localStorage.setItem("token", "");
@@ -105,9 +120,7 @@ const AddItem = () => {
         }
         setSelected(selected)
     }
-    if (ctx.active === "0") {
-        return <p>Please Login !!!</p>;
-    }
+   
     return (
         <div>
             <form onSubmit={handleSubmit}>
