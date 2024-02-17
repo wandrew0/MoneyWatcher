@@ -58,7 +58,7 @@ exports.add_item = async (req, res) => {
         }
 
         if (await Item.exists({ user_uuid: req.customer.uuid, access_token: req.body.access_token })) {
-            throw new Error("duplicate access_token");
+            throw new Error("user aleady has the bank account added!");
         }
 
         const item = await Item.create({ user_uuid: req.customer.uuid, access_token: req.body.access_token })

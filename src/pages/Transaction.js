@@ -2,6 +2,7 @@ import { jsonFetch, buildIpAddress, getJsonData } from "../components/common";
 import React from "react";
 import MainContext from "./MainContext"
 import { useNavigate } from 'react-router-dom'
+import '../css/styles.css';
 
 const Transaction = () => {
     const navigate = useNavigate();
@@ -10,6 +11,10 @@ const Transaction = () => {
     const [end, setEnd] = React.useState(new Date().toISOString().split('T')[0]);
     const [start, setStart] = React.useState(new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0])
     const [cats, setCats] = React.useState({});
+    const tableStyles = {
+        width: '100%',
+        margin: '20px 0',
+    };
     React.useEffect(() => {
         getJsonData("/api/v1/category/get", {})
             .then((d) => {
@@ -35,7 +40,7 @@ const Transaction = () => {
             return;
         }
         return <div>
-            <label for="select_category">New Category: </label>
+            <label className="labelText" for="select_category">Spending Category </label>
             <select id="select_category">
                 <option>ANY</option>
                 {Object.entries(cats.plaid).map(([k, v]) => {
@@ -95,20 +100,23 @@ const Transaction = () => {
         // console.log("drawing start");
         return (
             <div>
-                <h1>Transaction Page</h1>
+                <h1 className="blueHeader">Spending Report</h1>
                 <form onSubmit={getTransactions}>
                     <div>
-                        <label htmlFor="end">end date (required, YYYY-MM-DD)  </label>
-                        <input id="end" name="end" defaultValue={end} />
-                    </div>
-                    <div>
-                        <label htmlFor="start">start date (required, YYYY-MM-DD)  </label>
+                        <label className="labelText" htmlFor="start">start(required, YYYY-MM-DD)  </label>
                         <input id="start" name="start" defaultValue={start} />
                     </div>
+                    <div>
+                        <label className="labelText" htmlFor="end">end(required, YYYY-MM-DD)  </label>
+                        <input id="end" name="end" defaultValue={end} />
+                    </div>
+                    
                     {drawDropdown()}
-                    <button>Get Transactions</button>
+                    <div className="button-container">
+                        <button className="centered-button">Get Transactions</button>
+                    </div>
                 </form>
-                <table border={1}>
+                <table style={tableStyles}>
                     <tbody>
                         {drawHeader()}
                         {tr.map((t) => {

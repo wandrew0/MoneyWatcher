@@ -33,13 +33,13 @@ const LoginWin = () => {
   function handleErrorClose()  {
     setErrmsg(''); // Clear the error message, hiding the error box
   }
-
+  
+  
   function handleSubmit(event) {
     event.preventDefault();
     const fd = new FormData(event.target);
     // const ..= fd.getAll("multiple")  //for same name, diff value
     const data = Object.fromEntries(fd.entries());
-    // console.log(data);
     const postdata = {
       email: data.email,
       password: data.password
@@ -86,7 +86,7 @@ const LoginWin = () => {
           </div> */}
         <div>
           <label className="labelText" htmlFor="email">email</label>
-          <input id="email" type="email" name="email" onChange={emailChange} value={email} />
+          <input id="email" type="text" name="email" onChange={emailChange} value={email} />
         </div>
         <div>
           <label className="labelText" htmlFor="password">Password</label>
