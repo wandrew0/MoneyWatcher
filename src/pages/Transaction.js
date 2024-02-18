@@ -3,6 +3,7 @@ import React from "react";
 import MainContext from "./MainContext"
 import { useNavigate } from 'react-router-dom'
 import '../css/styles.css';
+import ErrorBoxWithLink from "./ErrorBoxWithLink";
 
 const Transaction = () => {
     const navigate = useNavigate();
@@ -11,10 +12,38 @@ const Transaction = () => {
     const [end, setEnd] = React.useState(new Date().toISOString().split('T')[0]);
     const [start, setStart] = React.useState(new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0])
     const [cats, setCats] = React.useState({});
-    const tableStyles = {
-        width: '100%',
-        margin: '20px 0',
+    const [total, setTotal] = React.useState(0);
+    const styles = {
+        divideLine : {
+            width: '100%',            
+            height: '2px',           
+            border: 'none',          
+        },
+        table : {
+            width: '100%',
+            margin: '20px 20px',
+        },
+        th: {
+            border: '1px solid black',
+            padding: '8px',
+            textAlign: 'center',
+            backgroundColor: '#f2f2f2',
+        },
+        tdOdd: {
+            border: '1px solid black',
+            padding: '8px',
+            textAlign: 'center',
+            backgroundColor: '#ffffff'
+        },
+        tdEven : {
+            border: '1px solid black',
+            padding: '8px',
+            textAlign: 'center',
+            backgroundColor: '#f2f2f2'
+        }
+
     };
+
     React.useEffect(() => {
         getJsonData("/api/v1/category/get", {})
             .then((d) => {
@@ -62,10 +91,10 @@ const Transaction = () => {
     const drawHeader = () => {
         return (
             <tr>
-                <th>Store</th>
-                <th>Date</th>
-                <th>Amount($)</th>
-                <th>Category</th>
+                <th style={styles.th}>Merchant</th>
+                <th style={styles.th}>Date</th>
+                <th style={styles.th}>Amount($)</th>
+                <th style={styles.th}>Category</th>
             </tr>
         )
     }
@@ -85,6 +114,10 @@ const Transaction = () => {
                 .then((json) => {
                     if (json.status === "success") {
                         setTrans(json.data.transactions);
+                        const sum = json.data.transactions.reduce((accumulator, currentValue) => {
+                            return accumulator + currentValue.amount;
+                        }, 0);
+                        setTotal(sum);
                     } else if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                         localStorage.token = "";
                         ctx.setActive1("0");
@@ -95,9 +128,7 @@ const Transaction = () => {
         })
     }
     const DrawTable = (({ tr }) => {
-        // console.log("drawing trying", tr);
         if (!Array.isArray(tr)) return (<></>)
-        // console.log("drawing start");
         return (
             <div>
                 <h1 className="blueHeader">Spending Report</h1>
@@ -116,13 +147,15 @@ const Transaction = () => {
                         <button className="centered-button">Get Transactions</button>
                     </div>
                 </form>
-                <table style={tableStyles}>
+                <hr style={styles.divideLine} />
+                <h4 className="blueHeader">Total Amount: ${total}</h4>
+                <table style={styles.table}>
                     <tbody>
                         {drawHeader()}
-                        {tr.map((t) => {
+                        {tr.map((t, index) => {
                             // console.log(t.name, t.category);
                             return (
-                                <tr>
+                                <tr style={index % 2 === 0 ? styles.tdEven : styles.tdOdd}>
                                     <td>
                                         {t.name}
                                     </td>
@@ -143,11 +176,13 @@ const Transaction = () => {
             </div>
         )
     })
-    //<DrawTable t={trans}/>
-    if (ctx.active === "0")
+    //< t={trans}/>
+    if (ctx.active === "0") {
         return (
-            <p>Please Login !!!</p>
+            <ErrorBoxWithLink errorMessage='You are not signed in.' link='/login' linkText='Sign In' />
         )
+    }
+    
     return (
         <div>
             <DrawTable tr={trans} />

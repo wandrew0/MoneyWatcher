@@ -9,6 +9,9 @@
     color : rgb(76, 0, 255);
     text-align: center;
 }
+.blueText {
+  color : rgb(76, 0, 255);
+}
 .labelText {
   display: inline-block; /* Makes the label respect the width property */
     font-family: monospace; /* Ensures each character has the same width */

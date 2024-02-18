@@ -3,6 +3,8 @@ import React from "react";
 import MainContext from "./MainContext"
 import { Link, useNavigate } from 'react-router-dom'
 import Categories from "../resources/Categories.js"
+import '../css/styles.css'
+
 
 const Merchant = ({ active }) => {
     const navigate = useNavigate();
@@ -148,8 +150,22 @@ const Merchant = ({ active }) => {
         )
     return (
         <div>
-            <h1>Merchant Page</h1>
-            <Link to="/add_category">add a custom category</Link>
+            <h1 className="blueHeader">Merchant Page</h1>
+            <p className="leftAlignedText"> 
+            A merchant is associated with both a type and a category. 
+            A category represents a broad classification that groups merchants based on common attributes (e.g., "Food").
+            Conversely, a type denotes a more specific classification within a category, grouping entities based 
+            on more narrowly defined characteristics (e.g., "Food_Restaurant").
+            Typically, a merchant's category and type are determined by banks. 
+            However, especially for small merchants, banks may not always have the correct information 
+            and thus might classify some merchants based on their best 'guess'. 
+            To enable users to better track their spending, MoneyWatcher allows users to define a new type 
+            within the 'Custom' category. 
+            Additionally, it permits users to modify a merchant's type using either predefined types or custom types.
+            <br />
+             <Link to="/add_category" className="blueText">You can add a new custom type.</Link>
+            </p>
+            
             <br />
             <br />
             <form onSubmit={modify_merchant}>
