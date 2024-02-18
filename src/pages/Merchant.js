@@ -156,6 +156,7 @@ const Merchant = ({ active }) => {
             A category represents a broad classification that groups merchants based on common attributes (e.g., "Food").
             Conversely, a type denotes a more specific classification within a category, grouping entities based 
             on more narrowly defined characteristics (e.g., "Food_Restaurant").
+            <br />
             Typically, a merchant's category and type are determined by banks. 
             However, especially for small merchants, banks may not always have the correct information 
             and thus might classify some merchants based on their best 'guess'. 
