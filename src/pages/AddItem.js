@@ -13,14 +13,21 @@ const AddItem = () => {
     const [selected, setSelected] = React.useState(new Set());
     const [tokens, setTokens] = React.useState([]);
     console.log("AddItem");
-    
+    function handleErrorClose()  {
+        console.log('reset');
+        setErrmsg(''); // Clear the error message, hiding the error box
+    }
     if (ctx.active === "0") {
         return (
             <ErrorBoxWithLink errorMessage='You are not signed in.' link='/login' linkText='Sign In' />
         )
     }
     React.useEffect(() => {
-            getJsonData("/api/v1/item/get_all", {}).then((d) => {
+        setTokens([{
+            bank: "loading",
+            token: "loading"      
+        }]);
+        getJsonData("/api/v1/item/get_all", {}).then((d) => {
             d.json().then((json) => {
                 if (json.status === "success") {
                     setTokens(json.data)
@@ -28,7 +35,9 @@ const AddItem = () => {
             });
         })
     }, []);
-    
+    function handleErrorClose()  {
+        setErrmsg(''); // Clear the error message, hiding the error box
+      };
     async function listSubmit(event) {
         event.preventDefault();
         const newmsg = [];
@@ -64,8 +73,7 @@ const AddItem = () => {
         }
         for (let i = 0; i < res.length; i++) {
             const json = await res[i].json();
-            const bankAccount = used[i].slice(-5);
-            newmsg.push(<li>Account: XXXX{bankAccount}: {json.status} {json.status === "fail" ? "- " + json.message : ""}</li>);
+            newmsg.push(<div>{used[i]}: {json.status} {json.status === "fail" ? "- " + json.message : ""}<br /></div>);
             if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                 localStorage.setItem("token", "");
                 ctx.setActive1("0");
@@ -87,8 +95,10 @@ const AddItem = () => {
 
         getJsonData("/api/v1/customer/item", postdata)
             .then((d) => {
+                // console.log("d=", d);
                 d.json()
                     .then((json) => {
+                        console.log("got json: ", json);
                         setErrmsg(<div>{json.status === "success" ? json.status : json.status + ": " + json.message}</div>);
                         if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                             localStorage.setItem("token", "");
@@ -138,7 +148,8 @@ const AddItem = () => {
                     {tokens.map((token, index) => {
                         return <li key={index}>
                             <input type="checkbox" id={`token${index}`} value={token.token} onClick={handleCheck} />
-                            <label className="labelTextBankAccount" htmlFor={`token${index}`}>{token.bank}: XXXX{token.token.slice(-5)}</label>
+                            <label className="labelTextBankAccount" htmlFor={`token${index}`}>
+                            {token.bank}: {token.token === "loading" ? "" : token.token.slice(-5)}</label>
                         </li>
                     })}
                 </ul>
@@ -147,7 +158,7 @@ const AddItem = () => {
                 <button type="submit" className="centered-button">Add Selected</button>
                 </div>
             </form>
-            <ul>{errmsg}</ul>
+            {errmsg}
         </div>
     )
 }
