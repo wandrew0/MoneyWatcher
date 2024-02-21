@@ -69,7 +69,9 @@ const Rule = () => {
         if (!Array.isArray(rules)) return (<></>)
         // console.log("drawing start");
         return (
-            <table border={1}>
+            <div>
+                <hr className="table-divideLine" />
+                <table border={1}>
                 {drawHeader()}
                 {rules.map((r) => {
                     return <tr data-name={r.name}>
@@ -85,6 +87,7 @@ const Rule = () => {
                     </tr>
                 })}
             </table>
+            </div>
         )
     })
     //<DrawTable t={trans}/>
@@ -94,31 +97,42 @@ const Rule = () => {
         )
     return (
         <div>
-            <p>Rule Page</p>
+            <h2 className="blueHeader">Spending Alert Rule Setup</h2>
+            <p className="leftAlignedText">
+                To create a spending alert rule, you need to define three variables: Duration, Limit, and Email. 
+                This rule will help you monitor your spending and ensure that you're alerted when your total spending 
+                exceeds a predefined threshold (limit) within a specific time frame(Duration). The alert will be sent to 
+                the email specified and can also be viewed in the Alerts page.
+            </p>
             <form onSubmit={addRule}>
                 <div>
-                    <label htmlFor="name">name (required)  </label>
+                    <label className="labelText" htmlFor="name">Name:</label>
                     <input id="name" name="name" />
                 </div>
                 <div>
-                    <label htmlFor="limit">$ limit (required) </label>
+                    <label className="labelText" htmlFor="limit">Maximum Amount limit:</label>
                     <input id="limit" name="limit" />
                 </div>
                 <div>
-                    <label htmlFor="days">days (required)  </label>
+                    <label className="labelText" htmlFor="days">Duration(Days):</label>
                     <input id="days" name="days" />
                 </div>
+                {/*
                 <div>
-                    <label htmlFor="category">category (not implemented)  </label>
+                    <label className="labelText" htmlFor="category">Merchant Type: (TBD,currently ALL merchants)  </label>
                     <input id="category" name="category" />
                 </div>
+                */}
                 <div>
-                    <label htmlFor="email">email  </label>
+                    <label className="labelText" htmlFor="email">Alert Email:</label>
                     <input id="email" name="email" />
                 </div>
-                <button>Add Rule</button>
+                <div className="button-container">
+                <button className="centered-button">Create a new spending alert rule</button>
+                </div>
             </form>
             <DrawTable rules={rules} />
+            
         </div>
     )
 }

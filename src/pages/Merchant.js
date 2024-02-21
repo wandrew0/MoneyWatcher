@@ -4,6 +4,8 @@ import MainContext from "./MainContext"
 import { Link, useNavigate } from 'react-router-dom'
 import Categories from "../resources/Categories.js"
 import '../css/styles.css'
+import CheckBox from './CheckBox.js'
+
 
 
 const Merchant = ({ active }) => {
@@ -11,11 +13,32 @@ const Merchant = ({ active }) => {
     const [trans, setTrans] = React.useState([]);
     const [cats, setCats] = React.useState({});
     const [selected, setSelected] = React.useState("");
+    const [mapState, setMapState] = React.useState(new Map());
+
+    
+    const updateMap = (k, v) => {
+        const newMap = new Map();
+        if (v) {
+            const newMap = new Map();
+            mapState.forEach((value, key) => {
+                newMap.set(key, false);
+            })
+            newMap.set(k, v);
+            setMapState(map => newMap);
+        } else {
+            setMapState(map => mapState.set(k, v));
+        }
+    }
+
+    
+
+
     const ctx = React.useContext(MainContext)
     React.useEffect(() => {
         refresh();
     }, []);
     function refresh() {
+        console.log('refresh');
         getJsonData("/api/v1/merchant", {})
             .then((d) => {
                 // console.log("d=", d);
@@ -25,6 +48,11 @@ const Merchant = ({ active }) => {
                         // console.log(json.data)
                         if (json.status === "success") {
                             setTrans(json.data);
+                            //console.log(json.data);
+                            json.data.forEach(element => {
+                                console.log("merchant: %s", element.name);
+                                updateMap(element.name, false);
+                            });
                         } else if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                             localStorage.setItem("token", "");
                             ctx.setActive1("0");
@@ -63,10 +91,10 @@ const Merchant = ({ active }) => {
     const drawHeader = () => {
         return (
             <tr>
-                <th>Name</th>
-                <th>Primary</th>
-                <th>Detailed</th>
-                <th>Select for updating</th>
+                <th></th>
+                <th className="table-th">Name</th>
+                <th className="table-th">Category</th>
+                <th className="table-th">Type</th>
             </tr>
         )
     }
@@ -75,8 +103,13 @@ const Merchant = ({ active }) => {
             return;
         }
         return <div>
-            <label for="select_category">New Category: </label>
+            <label className="labelText" for="select_category">New Type: </label>
             <select id="select_category">
+                <optgroup label="CUSTOM">
+                    {cats.custom.map((cat) => {
+                        return <option data-primary="CUSTOM" data-detailed={cat} value={cat}>{cat}</option>
+                    })}
+                </optgroup>
                 {Object.entries(cats.plaid).map(([k, v]) => {
                     return <optgroup label={k}>
                         {v.map((cat) => {
@@ -85,11 +118,7 @@ const Merchant = ({ active }) => {
                         })}
                     </optgroup>
                 })}
-                <optgroup label="CUSTOM">
-                    {cats.custom.map((cat) => {
-                        return <option data-primary="CUSTOM" data-detailed={cat} value={cat}>{cat}</option>
-                    })}
-                </optgroup>
+                
             </select>
         </div>
     }
@@ -114,26 +143,37 @@ const Merchant = ({ active }) => {
         event.preventDefault();
         setSelected(event.target.value);
     }
+
+    
+
     const DrawTable = (({ tr }) => {
         const loading = !Array.isArray(tr);
         return (
             <div>
-
-                <table border={1}>
+                <hr className="table-divideLine" />
+                <table className="table-general">
                     <tbody>
                         {drawHeader()}
                         {loading ? "loading" :
-                            tr.map((t) => {
+                            tr.map((t, index) => {
                                 return (
-                                    <tr>
+                                    <tr className={index % 2 === 0 ? "table-tdEven" : "table-tdOdd"}>
+                                        <td>
+                                            <input
+                                                type="radio"
+                                                name={t.name}
+                                                value={t.name}
+                                                checked={mapState.get(t.name)}
+                                                onChange={ () => {
+                                                    updateMap(t.name, true);
+                                                    setSelected(t.name);
+                                                }}
+                                            />
+                                            
+                                        </td>
                                         <td>{t.name}</td>
                                         <td>{t.primary}</td>
                                         <td>{t.detailed}</td>
-                                        <td>
-                                            <button onClick={() => {
-                                                setSelected(t.name);
-                                            }}>Select</button>
-                                        </td>
                                     </tr>
                                 )
                             })
@@ -146,36 +186,38 @@ const Merchant = ({ active }) => {
     //<DrawTable t={trans}/>
     if (ctx.active === "0")
         return (
-            <p>Please Login !!!</p>
+            <ErroBoxWithLink errorMessage="Please log in!" link="/login" linkText="Sign in" />
         )
     return (
         <div>
-            <h1 className="blueHeader">Merchant Page</h1>
-            <p className="leftAlignedText"> 
-            A merchant is associated with both a type and a category. 
-            A category represents a broad classification that groups merchants based on common attributes (e.g., "Food").
-            Conversely, a type denotes a more specific classification within a category, grouping entities based 
-            on more narrowly defined characteristics (e.g., "Food_Restaurant").
-            <br />
-            Typically, a merchant's category and type are determined by banks. 
-            However, especially for small merchants, banks may not always have the correct information 
-            and thus might classify some merchants based on their best 'guess'. 
-            To enable users to better track their spending, MoneyWatcher allows users to define a new type 
-            within the 'Custom' category. 
-            Additionally, it permits users to modify a merchant's type using either predefined types or custom types.
-            <br />
-             <Link to="/add_category" className="blueText">You can add a new custom type.</Link>
+            <h1 className="blueHeader">Merchants</h1>
+            <p className="leftAlignedText">
+                A merchant is associated with both a type and a category.
+                A category represents a broad classification that groups merchants based on common attributes (e.g., "Food").
+                Conversely, a type denotes a more specific classification within a category, grouping entities based
+                on more narrowly defined characteristics (e.g., "Food_Restaurant").
+                <br />
+                Typically, a merchant's category and type are determined by banks.
+                However, especially for small merchants, banks may not always have the correct information
+                and thus might classify some merchants based on their best 'guess'.
+                To enable users to better track their spending, MoneyWatcher allows users to define a new type
+                within the 'Custom' category.
+                Additionally, it permits users to modify a merchant's type using either predefined types or custom types.
+                <br />
+                <Link to="/add_category" className="blueText">You can add a new custom type.</Link>
             </p>
-            
+
             <br />
             <br />
             <form onSubmit={modify_merchant}>
                 <div>
-                    <label htmlFor="name">merchant name</label>
+                    <label className="labelText" htmlFor="name">Merchant Name</label>
                     <input id="name" name="name" value={selected} onChange={change} />
                 </div>
                 {drawDropdown()}
-                <button>Modify</button>
+                <div className="button-container">
+                <button className="centered-button">Update Merchant's Type</button>
+                </div>
             </form>
             <DrawTable tr={trans} />
         </div>
