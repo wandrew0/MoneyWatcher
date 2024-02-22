@@ -33,7 +33,6 @@ const Rule = () => {
                 <th>Category</th>
                 <th>email</th>
                 <th>Last Triggered</th>
-                <th>Actions</th>
             </tr>
         )
     }
@@ -66,25 +65,20 @@ const Rule = () => {
         })
     }
     const DrawTable = (({ rules }) => {
-        // console.log("drawing trying", tr);
-        if (!Array.isArray(rules)) return (<></>)
-        // console.log("drawing start");
+        if (rules.length == 0) return (<></>)
         return (
             <div>
                 <hr className="table-divideLine" />
-                <table border={1}>
+                <table className="table-general">
                 {drawHeader()}
                 {rules.map((r) => {
-                    return <tr data-name={r.name}>
+                    return <tr data-name={r.name} className="table-tdOdd">
                         <td>{r.name}</td>
                         <td>{r.days}</td>
                         <td>{r.limit}</td>
                         <td>{r.category}</td>
                         <td>{r.email}</td>
                         <td>{r.last_triggered}</td>
-                        <td>
-                            <button onClick={deleteRule}>delete</button>
-                        </td>
                     </tr>
                 })}
             </table>
@@ -111,25 +105,26 @@ const Rule = () => {
                     <input id="name" name="name" />
                 </div>
                 <div>
-                    <label className="labelText" htmlFor="limit">Maximum Amount limit:</label>
+                    <label className="labelText" htmlFor="limit">Maximum Amount limit($):</label>
                     <input id="limit" name="limit" />
                 </div>
                 <div>
                     <label className="labelText" htmlFor="days">Duration(Days):</label>
                     <input id="days" name="days" />
                 </div>
-                {/*
+                
                 <div>
-                    <label className="labelText" htmlFor="category">Merchant Type: (TBD,currently ALL merchants)  </label>
-                    <input id="category" name="category" />
+                    <label className="labelText" htmlFor="category">Merchant Type:(TBD,currently ALL)  </label>
+                    <input id="category" name="category" disabled />
                 </div>
-                */}
+                
                 <div>
                     <label className="labelText" htmlFor="email">Alert Email:</label>
                     <input id="email" name="email" />
                 </div>
                 <div className="button-container">
-                <button className="centered-button">Create a new spending alert rule</button>
+                <button className="centered-button">Create</button>
+                <button type="reset" className="centered-button">Reset</button>
                 </div>
             </form>
             <DrawTable rules={rules} />
