@@ -2,6 +2,7 @@ import { jsonFetch, buildIpAddress, getJsonData } from "../components/common";
 import React from "react";
 import MainContext from "./MainContext"
 import { useNavigate } from 'react-router-dom'
+import NotLoggedInError from "./NotLoggedInError";
 
 const Rule = () => {
     const navigate = useNavigate();
@@ -93,7 +94,7 @@ const Rule = () => {
     //<DrawTable t={trans}/>
     if (ctx.active === "0")
         return (
-            <p>Please Login !!!</p>
+            <NotLoggedInError />
         )
     return (
         <div>

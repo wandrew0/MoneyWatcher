@@ -6,6 +6,7 @@ import {
 import React from "react";
 import MainContext from "./MainContext";
 import { Link, useNavigate } from "react-router-dom";
+import NotLoggedInError from "./NotLoggedInError";
 
 const Alert = ({ active }) => {
     const [alerts, setAlerts] = React.useState([]);
@@ -72,7 +73,7 @@ const Alert = ({ active }) => {
         );
     };
     //<DrawTable t={trans}/>
-    if (ctx.active === "0") return <p>Please Login !!!</p>;
+    if (ctx.active === "0") return <NotLoggedInError />
     return (
         <div>
             <h1>Alert History</h1>

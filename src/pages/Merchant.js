@@ -4,7 +4,8 @@ import MainContext from "./MainContext"
 import { Link, useNavigate } from 'react-router-dom'
 import Categories from "../resources/Categories.js"
 import '../css/styles.css'
-import CheckBox from './CheckBox.js'
+import BlueLink from "./BlueLink.js";
+import NotLoggedInError from "./NotLoggedInError.js";
 
 
 
@@ -186,7 +187,7 @@ const Merchant = ({ active }) => {
     //<DrawTable t={trans}/>
     if (ctx.active === "0")
         return (
-            <ErroBoxWithLink errorMessage="Please log in!" link="/login" linkText="Sign in" />
+            <NotLoggedInError />
         )
     return (
         <div>
@@ -197,17 +198,15 @@ const Merchant = ({ active }) => {
                 Conversely, a type denotes a more specific classification within a category, grouping entities based
                 on more narrowly defined characteristics (e.g., "Food_Restaurant").
                 <br />
+                <br />
                 Typically, a merchant's category and type are determined by banks.
                 However, especially for small merchants, banks may not always have the correct information
                 and thus might classify some merchants based on their best 'guess'.
                 To enable users to better track their spending, MoneyWatcher allows users to define a new type
-                within the 'Custom' category.
-                Additionally, it permits users to modify a merchant's type using either predefined types or custom types.
-                <br />
-                <Link to="/add_category" className="blueText">You can add a new custom type.</Link>
+                within the 'Custom' category. (<BlueLink to="/add_category" text="Define a new type here." />)
+                It enables users to modify a merchant's existing type using either predefined types or custom types.
             </p>
 
-            <br />
             <br />
             <form onSubmit={modify_merchant}>
                 <div>
