@@ -7,6 +7,7 @@ import "./AddItem.css"
 import "../css/styles.css"
 import { set } from "mongoose";
 import NotLoggedInError from "./NotLoggedInError";
+import DemoInstructions from "./DemoInstructions";
 
 const AddItem = () => {
     const [errmsg, setErrmsg] = React.useState([]);
