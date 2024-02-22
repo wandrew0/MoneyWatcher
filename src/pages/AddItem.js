@@ -6,6 +6,7 @@ import MainContext from "./MainContext"
 import "./AddItem.css"
 import "../css/styles.css"
 import { set } from "mongoose";
+import NotLoggedInError from "./NotLoggedInError";
 
 const AddItem = () => {
     const [errmsg, setErrmsg] = React.useState([]);
@@ -19,12 +20,12 @@ const AddItem = () => {
     }
     if (ctx.active === "0") {
         return (
-            <ErrorBoxWithLink errorMessage='You are not signed in.' link='/login' linkText='Sign In' />
+            <NotLoggedInError />
         )
     }
     React.useEffect(() => {
         setTokens([{
-            bank: "loading",
+            bank: "loading from Plaid sandbox...",
             token: "loading"      
         }]);
         getJsonData("/api/v1/item/get_all", {}).then((d) => {
@@ -149,7 +150,7 @@ const AddItem = () => {
                         return <li key={index}>
                             <input type="checkbox" id={`token${index}`} value={token.token} onClick={handleCheck} />
                             <label className="labelTextBankAccount" htmlFor={`token${index}`}>
-                            {token.bank}: {token.token === "loading" ? "" : token.token.slice(-5)}</label>
+                            {token.bank} {token.token === "loading" ? "" : " : " + token.token.slice(-5)}</label>
                         </li>
                     })}
                 </ul>
