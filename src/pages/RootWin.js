@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 //import LoginWin from "./LoginWin";
 
 import { isActive } from "../components/common";
+import BlueLink from "./BlueLink";
 // <LoginWin/>
 
 //<Link to="/Merchant">Merchant</Link>
@@ -49,8 +50,7 @@ const RootWin = () => {
     const InactiveWin = () => {
         return (
             <p className="leftAlignedText">
-                Please <Link to="/login">log in</Link> or{" "}
-                <Link to="/signup">sign up!</Link>
+                Please <BlueLink to="/login" text="Log In" /> or <BlueLink to="/signup" text="Sign Up" />
             </p>
         );
     };
@@ -59,13 +59,12 @@ const RootWin = () => {
             <h1 className="blueHeader">
                 Welcome to MoneyWatcher Demo </h1>
             <p className="leftAlignedText">
-                This web server is created to demo MoneyWatcher's features.
-                You can sign up or log in. For the demo, we have pre-created
-                several test bank accounts with Plaid sandbox server. You can 
-                choose one or several test bank accounts as your own to try out
-                MoneyWatcher. (Using the Add Bank Account(s)). After that, with
-                Transaction tab, you can query your recent bank charge transactions.
-
+                This web server showcases the features of MoneyWatcher. 
+                Users can register to get an account to begin exploring its capabilities. 
+                We've set up multiple test bank accounts through the Plaid sandbox server for demo purposes. 
+                You're invited to select one or multiple test accounts as your own through the "Add Bank Account(s)" option. 
+                Following this, the "Transactions" tab allows you to review your recent bank charge transactions. 
+                Moreover, you can set up spending rules and track any alerts these rules trigger.
             </p>
             {!!active && ActiveWin()}
             {!active && InactiveWin()}
