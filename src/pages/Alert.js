@@ -40,27 +40,28 @@ const Alert = ({ active }) => {
             <tr>
                 <th>Name</th>
                 <th>Category</th>
-                <th>Limit</th>
-                <th>Email</th>
+                <th>Limit($)</th>
                 <th>Days</th>
-                <th>Date</th>
-                <th>Total</th>
+                <th>Date Triggered</th>
+                <th>Actual Spending Amount($)</th>
             </tr>
         );
     };
     const DrawTable = ({ input }) => {
+        if (input.length === 0 ) return (
+            <p><strong>No Alerts.</strong></p>
+        )
         return (
             <div>
-                <table border={1}>
+                <table className="table-general">
                     <tbody>
                         {drawHeader()}
-                        {input.map((t) => {
+                        {input.map((t, index) => {
                             return (
-                                <tr>
+                                <tr className={index%2 === 0 ? "table-tdEven" : "table-tdOdd"}>
                                     <td>{t.name}</td>
                                     <td>{t.category}</td>
                                     <td>{t.limit}</td>
-                                    <td>{t.email}</td>
                                     <td>{t.days}</td>
                                     <td>{t.trigger_date}</td>
                                     <td>{t.total}</td>
@@ -76,7 +77,7 @@ const Alert = ({ active }) => {
     if (ctx.active === "0") return <NotLoggedInError />
     return (
         <div>
-            <h1>Alert History</h1>
+            <h2 className="blueHeader">Alerts</h2>
             <DrawTable input={alerts} />
         </div>
     );
