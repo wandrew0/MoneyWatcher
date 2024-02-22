@@ -2,6 +2,7 @@ import { jsonFetch, buildIpAddress, getJsonData } from "../components/common";
 import React from "react";
 import MainContext from "./MainContext"
 import { Link, useNavigate } from 'react-router-dom'
+import NotLoggedInError from "./NotLoggedInError";
 
 const Merchant = ({ active }) => {
     const [cats, setCats] = React.useState([]);
@@ -50,7 +51,7 @@ const Merchant = ({ active }) => {
     }
     const drawHeader = () => {
         return (
-            <tr>
+            <tr className="table-th">
                 <th>Name</th>
             </tr>
         )
@@ -60,15 +61,16 @@ const Merchant = ({ active }) => {
         setSelected(event.target.value);
     }
     const DrawTable = (({ input }) => {
+        if (input.length === 0) return (<></>)
         return (
             <div>
-                <h4>existing custom categories</h4>
-                <table border={1}>
+                <h4 className="blueHeader">Existing User-Defined Merchant Types</h4>
+                <table className="table-general">
                     <tbody>
                         {drawHeader()}
-                        {input.map((t) => {
+                        {input.map((t, index) => {
                             return (
-                                <tr>
+                                <tr className={index%2 ===0 ? "table-tdOdd" : "table-tdEven"}>
                                     <td>{t}</td>
                                 </tr>
                             )
@@ -81,17 +83,19 @@ const Merchant = ({ active }) => {
     //<DrawTable t={trans}/>
     if (ctx.active === "0")
         return (
-            <p>Please Login !!!</p>
+            <NotLoggedInError />
         )
     return (
         <div>
-            <h1>Custom Categories</h1>
+            <h2 className="blueHeader">User-Defined Merchant Types</h2>
             <form onSubmit={add_category}>
                 <div>
-                    <label htmlFor="name">category </label>
-                    <input id="name" name="name" value={selected} onChange={change} />
+                    <label className="labelText" htmlFor="name">New Merchant Type Name: </label>
+                    <input className=""id="name" name="name" value={selected} onChange={change} />
                 </div>
-                <button>add</button>
+                <div className="button-container">
+                <button className="centered-button">Add</button>
+                </div>
             </form>
             <DrawTable input={cats} />
         </div>
