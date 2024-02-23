@@ -29,38 +29,32 @@ rule_schema.methods.alert = async function () {
             user_uuid: this.user_uuid,
             date: { $gte: start }
         });
+        //console.log("rule category:" + this.category);
         if (this.category) {
             const merchants = {};
             const merchant_list = await Merchant.find({
-                user_uuid: req.customer.uuid
+                user_uuid: this.user_uuid
             });
             for (const merchant of merchant_list) {
-                merchants[merchants.name] = merchant;
+                merchants[merchant.name] = merchant;
+                console.log(merchants[merchant.name].detailed);
             }
             transactions = transactions.filter(
                 (transaction) =>
                     merchants[transaction.name].detailed === this.category
-            );
+            )
         }
         const total = transactions.reduce(
             (acc, transaction) => acc + parseFloat(transaction.amount),
             0
         );
-        // console.log(total);
+        
+        
+
+        console.log(total);
+        console.log(this.limit);
         if (total > this.limit) {
-            email.email(
-                this.email,
-                "over limit",
-                JSON.stringify(
-                    {
-                        rule: this.name,
-                        total: total,
-                        transactions: transactions
-                    },
-                    null,
-                    2
-                )
-            );
+            console.log("exceeds limit");
             let today = new Date();
             today = today.toISOString().split("T")[0];
             this.last_triggered = today;
