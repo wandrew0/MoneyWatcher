@@ -59,7 +59,11 @@ rule_schema.methods.alert = async function () {
             today = today.toISOString().split("T")[0];
             this.last_triggered = today;
             await this.save();
-            let transInString = JSON.stringify(transactions);
+            let transIdList = [];
+            transactions.forEach(one => {
+                transIdList.push(one.transaction_id);
+            })
+            let transInString = JSON.stringify(transIdList);
             console.log(transInString);
             const alert = await Alert.create({
                 user_uuid: this.user_uuid,
