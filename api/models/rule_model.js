@@ -59,6 +59,8 @@ rule_schema.methods.alert = async function () {
             today = today.toISOString().split("T")[0];
             this.last_triggered = today;
             await this.save();
+            let transInString = JSON.stringify(transactions);
+            console.log(transInString);
             const alert = await Alert.create({
                 user_uuid: this.user_uuid,
                 name: this.name,
@@ -67,8 +69,24 @@ rule_schema.methods.alert = async function () {
                 email: this.email,
                 days: this.days,
                 trigger_date: today,
-                total: total
+                total: total,
+                trans: transInString,
             });
+            console.log("send email");
+            email.email(
+                this.email,
+                "over limit",
+                JSON.stringify(
+                    {
+                        rule: this.name,
+                        total: total,
+                        transactions: transactions
+                    },
+                    null,
+                    2
+                )
+            );
+
         }
     } catch (err) {
         throw err;

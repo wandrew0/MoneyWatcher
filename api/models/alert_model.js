@@ -8,7 +8,8 @@ const alert_schema = new mongoose.Schema({
     email: String,
     days: { type: Number, required: true },
     trigger_date: { type: String, required: true },
-    total: { type: Number, required: true }
+    total: { type: Number, required: true },
+    trans : {type: String, required: true},
 });
 
 alert_schema.index({ user_uuid: 1, trigger_date: -1 });
