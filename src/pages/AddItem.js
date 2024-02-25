@@ -14,7 +14,7 @@ const AddItem = () => {
     const ctx = React.useContext(MainContext);
     const [selected, setSelected] = React.useState(new Set());
     const [tokens, setTokens] = React.useState([]);
-    console.log("AddItem");
+    // console.log("AddItem");
     function handleErrorClose()  {
         console.log('reset');
         setErrmsg(''); // Clear the error message, hiding the error box
@@ -100,7 +100,7 @@ const AddItem = () => {
                 // console.log("d=", d);
                 d.json()
                     .then((json) => {
-                        console.log("got json: ", json);
+                        // console.log("got json: ", json);
                         setErrmsg(<div>{json.status === "success" ? json.status : json.status + ": " + json.message}</div>);
                         if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
                             localStorage.setItem("token", "");

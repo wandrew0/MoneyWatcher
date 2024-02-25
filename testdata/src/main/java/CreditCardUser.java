@@ -20,7 +20,7 @@ public class CreditCardUser {
     static org.json.simple.JSONObject config;
     static String merchants[] = {
             "24 hour fitness", "Arby's", "Hilton", "Amazon", "United", "Wal-Mart",
-            "Safeway", "GameStop", "Macy's", "Wall Street Journal", "Starbuck's", "Pizza My Heart",
+            "Safeway", "GameStop", "Macy's", "Wall Street Journal", "Starbucks", "Pizza My Heart",
             "Happy Cafe", "TOGO's", "KFC", "Expensive Shoe Store", "Coach", "Oil Changer",
             "AAA Travel", "Hobby Store", "Financial Times", "Uber", "WEE INC", "BENTO EXPRESS",
             "Kate's Nail Salon", "Happy Spa" , "Discord", "SteamGames", "Blizzard", "Spotify",
@@ -95,8 +95,12 @@ public class CreditCardUser {
     }
 
 
+
     public static void main(String[] argv) throws Exception {
-        String filePath = argv[0];
+        String filePath = "config.json";
+        if (argv.length == 1) {
+            filePath = argv[0];
+        }
 
         JSONParser parser = new JSONParser();
         Reader reader = new FileReader(filePath);
