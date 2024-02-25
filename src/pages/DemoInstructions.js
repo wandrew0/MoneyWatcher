@@ -18,6 +18,11 @@ function DemoInstructions() {
           <BlueLink to="/Transaction" text="View Transactions:" /> Once you've added the bank accounts, navigate to the transactions page. Here, you can review detailed transaction data, analyze spending patterns, and gain insights into financial habits.
         </li>
         <li>
+          <BlueLink to="/Merchant" text="View/Update Merchants and Merchant Types:"/> The Merchant page allows you to view and update
+          all your merchants' type. You also have the option to create user-defined merchant types and update the type of any merchant.
+           You can view transactions or create alerts based on any merchant type. (including user-defined type)
+        </li>
+        <li>
             <BlueLink to="/Rule" text="Confgure Alert Rule:" /> Visit the rules page to set up spending alerts. 
             This feature allows you to create personalized notifications based on specific spending behaviors, 
             helping you manage finances more effectively.

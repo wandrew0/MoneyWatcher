@@ -7,7 +7,7 @@ services:
       - 3001:3001
     volumes:
       - mongo_db:/data/db
-    image: wandrew0/moneywatcher:latest
+    image: andrew2021wang/moneywatcher:latest
 
 volumes:
   mongo_db: {}
