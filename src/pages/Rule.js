@@ -129,6 +129,7 @@ const Rule = () => {
         return <div>
             <label className="labelText" for="category">Type: </label>
             <select id="category">
+                <option>ANY</option>
                 <optgroup label="CUSTOM">
                     {cats.custom.map((cat) => {
                         return <option data-primary="CUSTOM" data-detailed={cat} value={cat}>{cat}</option>

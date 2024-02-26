@@ -107,7 +107,6 @@ const Transaction = () => {
         getJsonData("/api/v1/transaction", {
             start_date: event.target.start.value,
             end_date: event.target.end.value,
-            count: 50,
             category: selected.dataset.detailed
         }).then((d) => {
             d.json()
