@@ -3,7 +3,7 @@
 # /usr/sbin/sshd
 mongod -replSet "rs0" &
 npm run api &
-HTTPS=true npm run frontend &
+npm run frontend &
 
 until mongosh; do
     sleep 1
