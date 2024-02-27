@@ -39,7 +39,7 @@ const Merchant = ({ active }) => {
         refresh();
     }, []);
     function refresh() {
-        console.log('refresh');
+        //console.log('refresh');
         getJsonData("/api/v1/merchant", {})
             .then((d) => {
                 // console.log("d=", d);
@@ -51,7 +51,7 @@ const Merchant = ({ active }) => {
                             setTrans(json.data);
                             //console.log(json.data);
                             json.data.forEach(element => {
-                                console.log("merchant: %s", element.name);
+                                //console.log("merchant: %s", element.name);
                                 updateMap(element.name, false);
                             });
                         } else if (json.message === "jwt malformed" || json.message === "user doesn't exist" || json.message === "not logged in") {
