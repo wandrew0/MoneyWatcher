@@ -10,7 +10,9 @@
 }*/
 
 function buildIpAddress(port, local_address) {
-    const addr = window.location.origin;
+    const address = window.location.origin;
+    console.log(address);
+    let addr = address.replace("https", "http");
     const port_regex = /:[0-9]+$/;
     const port_index = addr.search(port_regex);
     let addr1;
@@ -18,7 +20,7 @@ function buildIpAddress(port, local_address) {
     else addr1 = addr;
     if (port) addr1 += ":" + port;
     if (local_address) addr1 += local_address;
-    // console.log('addr=', addr, "port_i=", port_index, "addr1=", addr1);
+    console.log('addr=', addr, "port_i=", port_index, "addr1=", addr1);
     return (addr1);
 }
 
