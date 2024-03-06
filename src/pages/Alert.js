@@ -5,20 +5,26 @@ import {
 } from "../components/common";
 import React from "react";
 import MainContext from "./MainContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import NotLoggedInError from "./NotLoggedInError";
 
 
 const Alert = ({ active }) => {
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
     const [alerts, setAlerts] = React.useState([]);
     const [transactions, setTransactions] = React.useState([]);
     const [selectedRow, setSelectedRow] = React.useState(-1);
     const ctx = React.useContext(MainContext);
+    const alertObj = { alertId: id};
+    console.log("alertObj");
+    console.log(JSON.stringify(alertObj));
+    
     React.useEffect(() => {
         refresh();
     }, []);
     function refresh() {
-        getJsonData("/api/v1/alert/get", {})
+        getJsonData("/api/v1/alert/get", id == null ? {} : alertObj)
             .then((d) => {
                 d.json().then((json) => {
                     if (json.status === "success") {
@@ -146,6 +152,7 @@ const Alert = ({ active }) => {
         );
     };
     //<DrawTable t={trans}/>
+    
     if (ctx.active === "0") return <NotLoggedInError />
     return (
         <div>

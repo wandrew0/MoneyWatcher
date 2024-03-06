@@ -27,3 +27,21 @@ exports.email = async (to, subject, text) => {
         throw err;
     }
 }
+
+exports.emailHtml = async(to, subject, htmlText) => {
+    try {
+        if (to) {
+            const options = {
+                from: process.env.EMAIL,
+                to: to,
+                subject: subject,
+                html : htmlText
+            }
+            const res = await transporter.sendMail(options);
+        } else {
+            console.log("no email address");
+        }
+    } catch (err) {
+        throw err;
+    }
+}

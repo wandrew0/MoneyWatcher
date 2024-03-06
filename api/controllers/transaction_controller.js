@@ -68,19 +68,19 @@ exports.get_transactions_by_ids = async (req, res) => {
     try {
         const transactionIdString = req.body["transaction_ids"];
         const idList = JSON.parse(transactionIdString);
-        idList.forEach(elem => console.log("trans_id" + elem));
+        //idList.forEach(elem => console.log("trans_id" + elem));
         const transactions = await Transaction.find({ 'transaction_id': { $in: idList } });
         const retValues = [];
         for (let i = 0; i < transactions.length; i++) {
             const trans = {};
             trans.amount = parseFloat(transactions[i].amount);
-            console.log("trans.amount" + trans.amount);
+          //  console.log("trans.amount" + trans.amount);
             trans.name = transactions[i].name;
             trans.date = transactions[i].date;
 
             retValues.push(trans);
         }
-        console.log(retValues);
+        //console.log(retValues);
         res.status(200).json({
             status: "success",
             data : {

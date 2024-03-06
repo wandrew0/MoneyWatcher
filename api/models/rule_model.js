@@ -3,6 +3,7 @@ const Transaction = require("./transaction_model");
 const Merchant = require("./merchant_model");
 const Alert = require("./alert_model");
 const email = require("../utils/email");
+const Writable = require('stream');
 
 const rule_schema = new mongoose.Schema({
     user_uuid: { type: String, required: true },
@@ -49,12 +50,7 @@ rule_schema.methods.alert = async function () {
             0
         );
         
-        
-
-        console.log(total);
-        console.log(this.limit);
         if (total > this.limit) {
-            console.log("exceeds limit");
             let today = new Date();
             today = today.toISOString().split("T")[0];
             this.last_triggered = today;
@@ -64,7 +60,6 @@ rule_schema.methods.alert = async function () {
                 transIdList.push(one.transaction_id);
             })
             let transInString = JSON.stringify(transIdList);
-            console.log(transInString);
             const alert = await Alert.create({
                 user_uuid: this.user_uuid,
                 name: this.name,
@@ -76,21 +71,24 @@ rule_schema.methods.alert = async function () {
                 total: total,
                 trans: transInString,
             });
-            console.log("send email");
-            email.email(
+            // console.log("alert id:" + alert._id);
+            // console.log(sub);
+            let sub = "An alert was triggered for Rule Name:" + this.name;
+            let alertUrl = process.env.URL + "/Alert?id=" + alert._id;
+            console.log(alertUrl);
+            email.emailHtml(
                 this.email,
-                "over limit",
-                JSON.stringify(
-                    {
-                        rule: this.name,
-                        total: total,
-                        transactions: transactions
-                    },
-                    null,
-                    2
-                )
-            );
+                sub,
+                "<b>Rule Name: " + this.name + "</b></br>" +
+                "<h4>Spending limit: " + this.limit + "</h4>" +
+                "<h4>Days: " + this.days + "</h4>" +
+                "<h4>Merchant Type: " + (this.category ? this.category : 'ALL') + "</h4>" +
+                "<h4>An alert was just created. Click <a href=" + alertUrl + ">here </a>" +
+                " for its detail. </h4>"
 
+
+                
+            );
         }
     } catch (err) {
         throw err;

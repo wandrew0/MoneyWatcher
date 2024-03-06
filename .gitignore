@@ -2,3 +2,4 @@ node_modules
 /api/config.env
 .vscode
 .DS_Store
+.class
