@@ -11,6 +11,7 @@ To obtain an access token, use the Plaid API, to use that user name.
 #) go to plaid sandbox test page, and create a test account user, {test user} with the transaction json file.
 #) use plaid's sandbox API sandbox/public_token/create to obtain a public token, with override_user = {test user}
 #) call item/public_token/exchange to obtain an access token
+#) write all generated tokens to api/data/tokens.txt
 
 
 # Generated access tokens
