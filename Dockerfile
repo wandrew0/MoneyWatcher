@@ -13,6 +13,8 @@ EXPOSE 3000
 EXPOSE 3001
 WORKDIR /usr/src/app
 COPY package*.json .
+RUN npm config rm proxy
+RUN npm config rm https-proxy
 RUN npm install
 COPY . .
 RUN chmod u+x start.sh
