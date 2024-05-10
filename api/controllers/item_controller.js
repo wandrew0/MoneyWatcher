@@ -4,13 +4,15 @@ const plaid = require("./../utils/plaid");
 const tokens = fs
     .readFileSync(`${__dirname}/../data/tokens.txt`)
     .toString()
-    .split("\n")
+    .split(/\s+/)
     .slice(0, -1);
 
 let ret = [];
 let lock = false;
 
 exports.get_tokens = async (req, res) => {
+    console.log(`${__dirname}/../data/tokens.txt`);
+    console.log(tokens);
     try {
         while (lock) {
             await new Promise((r) => setTimeout(r, 500));
@@ -20,6 +22,7 @@ exports.get_tokens = async (req, res) => {
             lock = true;
             const newbanks = [];
             for (const token of tokens) {
+                console.log("token:" + token);
                 const id = (await plaid.get_accounts(token)).item
                     .institution_id;
                 const name = (await plaid.get_institution_name(id))
