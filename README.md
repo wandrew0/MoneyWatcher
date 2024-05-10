@@ -43,18 +43,30 @@ EMAIL_PASSWORD=OMITTED # some services are finnicky and require special setup, n
 ## Run (no Docker)
 **WARNING:** MoneyWatcher will NOT run properly without environment variables PLAID_CLIENT_ID and PLAID_SECRET set in `/api/config.env` 
 
-Below are instructions to run on MacOS.
-* install MongoDB.
+### Instructions to run locally
+1. install MongoDB
+- MacOS
   ```
   brew tap mongodb/brew
   brew install mongodb-community
   ```
-* configure mongod to run as a replica set (needed for transactions). add the following lines to mongod.conf
+- Ubuntu
+  ```
+  sudo apt-get install gnupg curl
+  curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+  echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+  sudo apt-get update
+  sudo apt-get install -y mongodb-org
+   ```
+2. configure mongod to run as a replica set (needed for transactions). 
+    Add the following lines to mongod.conf. 
+   /etc/mongod.conf on Ubuntu; /usr/local/etc/mongod.conf on Mac
   ```
   replication:
     replSetName: rs0
   ```
-* start and initialize mongodb replica
+3. start and initialize mongodb replica
+- MacOS
   ```
     brew services start mongodb/brew/mongodb-community
     mongosh
@@ -62,10 +74,13 @@ Below are instructions to run on MacOS.
     rs.initiate()
   ```
   subsequent start/restart can use regular brew services commands.
-
-
-
-
+- Ubuntu
+  ```
+  sudo systemctl start mongod
+  mongosh
+  use admin
+  rs.initiate()
+  ```
 
 Before running any of the javascript code, make sure that your environment variables in `api/config.env` are set to valid values. Depending on the provider, email may require special setup to work properly. 
 
