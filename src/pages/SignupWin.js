@@ -3,6 +3,7 @@ import ErrorBox from './ErrorBox';
 import { jsonFetch, buildIpAddress } from "../components/common";
 import MainContext from "./MainContext"
 import { Link } from "react-router-dom";
+import PasswordWithRequirements from "../components/PasswordWithRequirementsHelper";
 
 const SignupWin = () => {
   const firstName_0 = "";
@@ -92,7 +93,7 @@ const SignupWin = () => {
       })
   }
   return (
-    <div >
+    <div>
       <form onSubmit={handleSubmit}>
         <h2 className="blueHeader">Sign Up</h2>
         <div>
@@ -104,13 +105,10 @@ const SignupWin = () => {
           <input id="lastname" type="name" size="40" name="lastname" value={lastName} onChange={lastNameChange} required />
         </div>
         <div>
-          <label className="labelText" htmlFor="email">email</label>
+          <label className="labelText" htmlFor="email">Email</label>
           <input id="email" type="email" size="40" name="email" onChange={emailChange} value={email} required />
         </div>
-        <div>
-          <label className="labelText" htmlFor="password">Password(minimum 4 characters)</label>
-          <input id="password" size="40" type="password" name="password" value={password} onChange={passwordChange} required />
-        </div>
+        <PasswordWithRequirements />
         <p className="form-actions">
           <div className="button-container">
           <button className="centered-button" onClick={resetHandle}>
