@@ -20,6 +20,10 @@
     margin-bottom: 20px;
     margin-top: 20px;
     box-sizing: border-box; /* Includes padding in the total width */
+    font-size: x-large;
+}
+.indent4 {
+    margin-left: 60px;
 }
 .labelTextBankAccount {
   display: inline-block;
@@ -97,6 +101,8 @@
 .highlighted {
   background-color: rgba(255, 0, 0, 0.345); /* Or any color you prefer */
 }
+
+
 
 
 

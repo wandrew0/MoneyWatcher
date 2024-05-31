@@ -3,6 +3,7 @@ import ErrorBox from './ErrorBox';
 import { jsonFetch, buildIpAddress } from "../components/common";
 import MainContext from "./MainContext"
 import { Link } from "react-router-dom";
+import PasswordWithRequirements from "../components/PasswordWithRequirements";
 
 const SignupWin = () => {
   const firstName_0 = "";
@@ -34,9 +35,7 @@ const SignupWin = () => {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   };
-  function isValidPassword(password) {
-      return password.length >= 4;
-  }
+
   
     
   function handleSubmit(event) {
@@ -50,10 +49,7 @@ const SignupWin = () => {
       setErrmsg("invalid email:" + data.email);
       return;
     }
-    if (!isValidPassword(data.password)) {
-      setErrmsg("password must be at least 4 characters");
-      return;
-    }
+
     // const postdata = new FormData();
     // postdata.append("first_name", data.firstname);
     // postdata.append("last_name", data.lastname);
@@ -92,7 +88,7 @@ const SignupWin = () => {
       })
   }
   return (
-    <div >
+    <div>
       <form onSubmit={handleSubmit}>
         <h2 className="blueHeader">Sign Up</h2>
         <div>
@@ -104,13 +100,10 @@ const SignupWin = () => {
           <input id="lastname" type="name" size="40" name="lastname" value={lastName} onChange={lastNameChange} required />
         </div>
         <div>
-          <label className="labelText" htmlFor="email">email</label>
+          <label className="labelText" htmlFor="email">Email</label>
           <input id="email" type="email" size="40" name="email" onChange={emailChange} value={email} required />
         </div>
-        <div>
-          <label className="labelText" htmlFor="password">Password(minimum 4 characters)</label>
-          <input id="password" size="40" type="password" name="password" value={password} onChange={passwordChange} required />
-        </div>
+        <PasswordWithRequirements />
         <p className="form-actions">
           <div className="button-container">
           <button className="centered-button" onClick={resetHandle}>
