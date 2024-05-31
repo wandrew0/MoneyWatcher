@@ -3,7 +3,7 @@ import ErrorBox from './ErrorBox';
 import { jsonFetch, buildIpAddress } from "../components/common";
 import MainContext from "./MainContext"
 import { Link } from "react-router-dom";
-import PasswordWithRequirements from "../components/PasswordWithRequirementsHelper";
+import PasswordWithRequirements from "../components/PasswordWithRequirements";
 
 const SignupWin = () => {
   const firstName_0 = "";
@@ -35,9 +35,7 @@ const SignupWin = () => {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   };
-  function isValidPassword(password) {
-      return password.length >= 4;
-  }
+
   
     
   function handleSubmit(event) {
@@ -51,10 +49,7 @@ const SignupWin = () => {
       setErrmsg("invalid email:" + data.email);
       return;
     }
-    if (!isValidPassword(data.password)) {
-      setErrmsg("password must be at least 4 characters");
-      return;
-    }
+
     // const postdata = new FormData();
     // postdata.append("first_name", data.firstname);
     // postdata.append("last_name", data.lastname);

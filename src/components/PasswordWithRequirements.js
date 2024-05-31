@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import InputWithRequirements from "./InputWithRequirements";
 const PasswordWithRequirements = () => {
     const lengthReq = "at least 8 characters long";
     const capitalReq = "at least 1 upper-case letter";
@@ -27,16 +28,11 @@ const PasswordWithRequirements = () => {
             <label className="labelText" htmlFor="password">Password</label>
             <input
                 id="password"
-                type="password"
+                type="password" name="password"
                 value={password}
                 onChange={handlePasswordChange}
             />
-            {
-                requirements.map((item) => (
-                    <div className="indent4">
-                        <input type="checkbox" checked={item.checked} disabled/><label>{item.label}</label>
-                    </div>))
-            }
+            <InputWithRequirements requirements={requirements} />
         </div>
     )
 }
