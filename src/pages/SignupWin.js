@@ -1,3 +1,4 @@
+
 import React from "react";
 import ErrorBox from './ErrorBox';
 import { jsonFetch, buildIpAddress } from "../components/common";
@@ -6,26 +7,27 @@ import { Link } from "react-router-dom";
 import PasswordWithRequirements from "../components/PasswordWithRequirements";
 
 const SignupWin = () => {
-  const firstName_0 = "";
-  const lastName_0 = "";
-  const email_0 = ""
-  const password_0 = "";
-  const [firstName, setFirstName] = React.useState(firstName_0);
-  const [lastName, setLastName] = React.useState(lastName_0);
-  const [email, setEmail] = React.useState(email_0)
-  const [password, setPassword] = React.useState(password_0)
+
+  console.log("SignupWin renders");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [errmsg, setErrmsg] = React.useState("");
+  const [resetVal, setResetVal] = React.useState(0)
+  const [goodPassword, setGoodPassword] = React.useState(false);
+
+
 
   function firstNameChange(e) { setFirstName(e.target.value) }
   function lastNameChange(e) { setLastName(e.target.value) }
   function emailChange(e) { setEmail(e.target.value) }
-  function passwordChange(e) { setPassword(e.target.value) }
+
   const ctx = React.useContext(MainContext);
   function resetHandle() {
-    setFirstName(firstName_0);
-    setLastName(lastName_0);
-    setEmail(email_0);
-    setPassword(password_0);
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setResetVal(prevState => prevState + 1);
   }
   function handleErrorClose()  {
     setErrmsg(''); // Clear the error message, hiding the error box
@@ -36,7 +38,6 @@ const SignupWin = () => {
     return regex.test(email);
   };
 
-  
     
   function handleSubmit(event) {
     event.preventDefault();
@@ -47,6 +48,12 @@ const SignupWin = () => {
     if (!isValidEmail(data.email)) {
       console.log("invalid email: %s", data.email);
       setErrmsg("invalid email:" + data.email);
+      return;
+    }
+    console.log("password:" + data.password);
+    if (!goodPassword) {
+      console.log("invaid password");
+      setErrmsg("invalid password");
       return;
     }
 
@@ -103,7 +110,9 @@ const SignupWin = () => {
           <label className="labelText" htmlFor="email">Email</label>
           <input id="email" type="email" size="40" name="email" onChange={emailChange} value={email} required />
         </div>
-        <PasswordWithRequirements />
+        <div>
+        <PasswordWithRequirements resetVal={resetVal} isGoodPassword={setGoodPassword}/>
+        </div>
         <p className="form-actions">
           <div className="button-container">
           <button className="centered-button" onClick={resetHandle}>
