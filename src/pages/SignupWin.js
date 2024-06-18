@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, {useEffect} from "react";
 import ErrorBox from './ErrorBox';
 import { jsonFetch, buildIpAddress } from "../components/common";
 import MainContext from "./MainContext"
@@ -15,6 +15,7 @@ const SignupWin = () => {
   const [errmsg, setErrmsg] = React.useState("");
   const [resetVal, setResetVal] = React.useState(0)
   const [goodPassword, setGoodPassword] = React.useState(false);
+  const [goodForm, setGoodForm] = React.useState(false);
 
 
 
@@ -22,12 +23,17 @@ const SignupWin = () => {
   function lastNameChange(e) { setLastName(e.target.value) }
   function emailChange(e) { setEmail(e.target.value) }
 
+  useEffect(() => {
+    setGoodForm(goodPassword && lastName && firstName && isValidEmail(email));
+  }, [goodPassword, lastName, email, firstName, email]);
+
   const ctx = React.useContext(MainContext);
   function resetHandle() {
     setFirstName("");
     setLastName("");
     setEmail("");
     setResetVal(prevState => prevState + 1);
+    setGoodForm(false);
   }
   function handleErrorClose()  {
     setErrmsg(''); // Clear the error message, hiding the error box
@@ -115,10 +121,10 @@ const SignupWin = () => {
         </div>
         <p className="form-actions">
           <div className="button-container">
-          <button className="centered-button" onClick={resetHandle}>
+          <button className="centered-button" onClick={resetHandle} >
             Reset
           </button>
-          <button type="submit" className="centered-button">
+          <button type="submit" className="centered-button" disabled={!goodForm}>
             Sign Up
           </button>
           </div>

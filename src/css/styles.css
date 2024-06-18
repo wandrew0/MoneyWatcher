@@ -56,6 +56,13 @@
   background-color: #e0e0e0; /* Slightly darker background on hover */
 }
 
+.centered-button:disabled {
+    background-color: #d3d3d3; /* Light grey background for disabled state */
+    border: 1px solid #a9a9a9; /* Darker border to indicate it's disabled */
+    cursor: not-allowed; /* Cursor to indicate it's not clickable */
+    color: gray;
+}
+
 .table-divideLine  {
       width: 100%;            
       height: 2px;           
