@@ -108,8 +108,13 @@ You will be able to connect to localhost:3001 for the UI and localhost:3000 for 
 
 ## Run (Docker container in AWS)
 `docker login`
+
 `docker tag moneywatcher:latest andrew2021wang/moneywatcher:latest`
+
 `docker push andrew2021wang/moneywatcher:latest`
+
 on aws
+
 `docker pull andrew2021wang/moneywatcher:latest`
+
 `docker run -d -p 3000:3000 -p 3001:3001 image_id`
