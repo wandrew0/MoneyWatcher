@@ -3,7 +3,9 @@ RUN apt-get update && \
     apt install curl && \
     curl -fsSL https://deb.nodesource.com/setup_21.x | bash - && \
     apt-get install -y nodejs && \
-    apt-get install -y openssh-server
+    apt-get install -y openssh-server && \
+    apt-get install -y less && \
+    apt-get install -y vim
 # RUN mkdir /var/run/sshd
 # RUN echo 'root:pass' | chpasswd
 # RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
