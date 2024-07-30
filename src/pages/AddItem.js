@@ -19,7 +19,7 @@ const AddItem = () => {
 
     if (ctx.active === "0") {
         return (
-            <NotLoggedInError />
+            <NotLoggedInError/>
         )
     }
     React.useEffect(() => {
@@ -33,7 +33,7 @@ const AddItem = () => {
         })
         setTokens([{
             bank: "loading from Plaid sandbox...",
-            token: "loading"      
+            token: "loading"
         }]);
         getJsonData("/api/v1/item/get_all", {}).then((d) => {
             d.json().then((json) => {
@@ -45,9 +45,11 @@ const AddItem = () => {
         });
         //console.log("tokens" + tokens);
     }, [fetch]);
-    function handleErrorClose()  {
+
+    function handleErrorClose() {
         setErrmsg(''); // Clear the error message, hiding the error box
-      };
+    };
+
     async function listSubmit(event) {
         console.log("listSubmit called");
         event.preventDefault();
@@ -97,6 +99,7 @@ const AddItem = () => {
         }
         setSelected(selected)
     }
+
     const renderCheckBox = (token, index) => {
         if (!existingTokens.includes(token.token)) {
             return (<li key={index}>
@@ -114,14 +117,7 @@ const AddItem = () => {
                     {token.bank} {token.token === "loading" ? "" : " : " + token.token.slice(-5)}</label>
             </li>)
         }
-    };
-    //console.log("existingTokens:" + existingTokens);
-    let accessTokens = tokens.map((token) => {
-        return token.token;
     }
-    );
-//console.log("access tokens:" + accessTokens);
-//setFetch((prevState) => !prevState);
 
 return (
     <div>
