@@ -11,8 +11,8 @@ let ret = [];
 let lock = false;
 
 exports.get_tokens = async (req, res) => {
-    console.log(`${__dirname}/../data/tokens.txt`);
-    console.log(tokens);
+    //console.log(`${__dirname}/../data/tokens.txt`);
+    //console.log(tokens);
     try {
         while (lock) {
             await new Promise((r) => setTimeout(r, 500));

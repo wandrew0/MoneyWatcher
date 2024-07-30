@@ -35,7 +35,7 @@ const RootWin = () => {
                     <tr>
                         <td>
                             <Link to="/add_item">
-                                Add Bank Account(s)
+                                Add/View Bank Account(s)
                             </Link>
                         </td>
                     </tr>

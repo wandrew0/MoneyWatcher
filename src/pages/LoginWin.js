@@ -71,6 +71,9 @@ const LoginWin = () => {
         setErrmsg("Login Error2");
       })
   }
+  function handleErrorClose()  {
+    setErrmsg(''); // Clear the error message, hiding the error box
+  }
   /*<Link to='/forgotpassword' style={{margin:"1rem"}}>Forgot Password</Link>*/
   return (
     <div>

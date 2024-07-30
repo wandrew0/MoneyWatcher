@@ -45,7 +45,7 @@ const MainNavigation = ({ active }) => {
                             </li>
                             <li>
                                 <NavLink to="/add_item">
-                                    Add Bank Account(s)
+                                    Add/View Bank Account(s)
                                 </NavLink>
                             </li>
                             <li>

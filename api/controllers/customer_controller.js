@@ -58,11 +58,11 @@ exports.add_item = async (req, res) => {
         }
 
         if (await Item.exists({ user_uuid: req.customer.uuid, access_token: req.body.access_token })) {
-            throw new Error("user aleady has the bank account added!");
+            console.log("uuid:" + req.customer.uuid + " already has access token:" + req.body.access_token);
+        } else {
+            const item = await Item.create({user_uuid: req.customer.uuid, access_token: req.body.access_token})
+            item.sync();
         }
-
-        const item = await Item.create({ user_uuid: req.customer.uuid, access_token: req.body.access_token })
-        item.sync();
         res.status(200).json({
             status: "success",
             data: customer
@@ -156,10 +156,14 @@ exports.get_all_customers = async (req, res) => {
 
 exports.get_customer_banks = async (req, res) => {
     try {
-        const customer = await Customer.findOne({ "uuid": req.customer.uuid });
-        const banks = customer["items"].map((item) => {
-            return { institution_name: item["institution_name"], institution_id: item["institution_id"] }
+        //console.log("get_customer_banks:" + req.customer.uuid);
+        const items = await Item.find({user_uuid: req.customer.uuid})
+        //console.log("bank accounts:" + items);
+        const banks = items.map((item) => {
+            //console.log("one item:" + item.access_token);
+            return item.access_token;
         });
+        //console.log(banks);
         res.status(200).json({
             status: "success",
             data: banks
