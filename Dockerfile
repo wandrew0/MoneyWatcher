@@ -20,4 +20,5 @@ RUN npm config rm https-proxy
 RUN npm install
 COPY . .
 RUN chmod u+x start.sh
+ENV WORK_DIR=/usr/src/app
 CMD ./start.sh

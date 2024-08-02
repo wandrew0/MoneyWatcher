@@ -1,4 +1,5 @@
 const fs = require("fs");
+const logger = require("../utils/logger");
 const plaid = require("./../utils/plaid");
 
 const tokens = fs
@@ -18,11 +19,11 @@ exports.get_tokens = async (req, res) => {
             await new Promise((r) => setTimeout(r, 500));
         }
         if (ret.length === 0) {
-            console.log("caching thingies and setting lock");
+            logger.debug("caching thingies and setting lock");
             lock = true;
             const newbanks = [];
             for (const token of tokens) {
-                console.log("token:" + token);
+                logger.debug("token:" + token);
                 const id = (await plaid.get_accounts(token)).item
                     .institution_id;
                 const name = (await plaid.get_institution_name(id))
@@ -42,7 +43,7 @@ exports.get_tokens = async (req, res) => {
         });
     } catch (err) {
         lock = false;
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message

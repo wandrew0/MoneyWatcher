@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const { getMaxListeners } = require("../app");
+const logger = require("./logger");
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -21,7 +22,7 @@ exports.email = async (to, subject, text) => {
             const res = await transporter.sendMail(options);
             // console.log(res);
         } else {
-            console.log(subject);
+            logger.info(subject);
         }
     } catch (err) {
         throw err;
@@ -39,7 +40,7 @@ exports.emailHtml = async(to, subject, htmlText) => {
             }
             const res = await transporter.sendMail(options);
         } else {
-            console.log("no email address");
+            logger.warn("no email address");
         }
     } catch (err) {
         throw err;

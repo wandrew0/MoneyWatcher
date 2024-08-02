@@ -6,6 +6,7 @@ const Rule = require("./rule_model");
 const bcrypt = require("bcryptjs");
 const email = require("./../utils/email");
 const Item = require("./item_model");
+const logger = require("../utils/logger");
 
 
 const customer_schema = new mongoose.Schema({
@@ -198,7 +199,9 @@ async function create_transactions(user_uuid, item_token, cursor) {
             //     }
             // });
         }
-        Transaction.create(trans_obj).catch((err) => console.log("ignored duplicate\n", err));
+        Transaction.create(trans_obj).catch(
+            (err) => logger.warn("ignored duplicate\n {err}")
+        );
     }
     return { next_cursor, map };
 }

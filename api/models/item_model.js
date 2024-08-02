@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Merchant = require("./merchant_model");
 const Transaction = require("./transaction_model");
 const plaid = require("../utils/plaid");
+const logger = require("../utils/logger");
 
 const item_schema = new mongoose.Schema({
     user_uuid: {
@@ -61,7 +62,7 @@ item_schema.methods.sync = async function () {
             });
             const { next_cursor, transactions } = await plaid.get_all_transactions(this.access_token, cursor);
             if (!next_cursor) {
-                console.log(this.user_uuid);
+                logger.info(this.user_uuid);
             }
             this.cursor = next_cursor;
             await this.save({ session });
@@ -101,7 +102,7 @@ item_schema.methods.sync = async function () {
 
     // create the merchants 
     for (const name of Object.keys(merchants)) {
-        Merchant.create([merchants[name]]).catch((err) => console.log("ignored"));
+        Merchant.create([merchants[name]]).catch((err) => logger.warn("ignored error: {err}"));
     }
 }
 

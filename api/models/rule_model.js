@@ -4,6 +4,7 @@ const Merchant = require("./merchant_model");
 const Alert = require("./alert_model");
 const email = require("../utils/email");
 const Writable = require('stream');
+const logger = require("../utils/logger");
 
 const rule_schema = new mongoose.Schema({
     user_uuid: { type: String, required: true },
@@ -38,7 +39,7 @@ rule_schema.methods.alert = async function () {
             });
             for (const merchant of merchant_list) {
                 merchants[merchant.name] = merchant;
-                console.log(merchants[merchant.name].detailed);
+                logger.debug(merchants[merchant.name].detailed);
             }
             transactions = transactions.filter(
                 (transaction) =>
@@ -75,7 +76,7 @@ rule_schema.methods.alert = async function () {
             // console.log(sub);
             let sub = "An alert was triggered for Rule Name:" + this.name;
             let alertUrl = process.env.URL + "/Alert?id=" + alert._id;
-            console.log(alertUrl);
+            logger.debug(alertUrl);
             email.emailHtml(
                 this.email,
                 sub,

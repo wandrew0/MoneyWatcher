@@ -1,11 +1,13 @@
 const Alert = require("./../models/alert_model");
+const logger = require("../utils/logger");
 
 exports.get_alerts = async (req, res) => {
     try {
-        console.log(req.body);
+
+        logger.debug(req.body);
         const alertId = req.body == null ? {} : req.body["alertId"];
         if (alertId != null) {
-            console.log(alertId);
+            logger.debug(alertId);
         }
         let alerts = [];
         if (alertId != null) {
@@ -18,7 +20,7 @@ exports.get_alerts = async (req, res) => {
             data: alerts
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message

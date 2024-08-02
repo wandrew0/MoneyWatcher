@@ -3,10 +3,11 @@ const dotenv = require("dotenv");
 dotenv.config({ path: `${__dirname}/config.env` });
 
 const app = require("./app");
+const logger = require("./utils/logger");
 
 mongoose.connect(process.env.DATABASE).then(con => {
-    console.log("db connection successful");
-    // reset();
+    logger.info("db connection successful");
+
 });
 
 function reset() {
@@ -21,5 +22,5 @@ function reset() {
 }
 
 app.listen(process.env.PORT, () => {
-    console.log(`Running on port ${process.env.PORT}`);
+    logger.info(`Running on port ${process.env.PORT}`);
 });

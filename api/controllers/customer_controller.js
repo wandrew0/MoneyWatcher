@@ -1,4 +1,5 @@
 const { promisify } = require("util");
+const logger = require("../utils/logger");
 const Customer = require("./../models/customer_model");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
@@ -41,7 +42,7 @@ exports.protect = async (req, res, next) => {
         req.customer = customer
         next();
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message
@@ -58,7 +59,7 @@ exports.add_item = async (req, res) => {
         }
 
         if (await Item.exists({ user_uuid: req.customer.uuid, access_token: req.body.access_token })) {
-            console.log("uuid:" + req.customer.uuid + " already has access token:" + req.body.access_token);
+            logger.warn("uuid:" + req.customer.uuid + " already has access token:" + req.body.access_token);
         } else {
             const item = await Item.create({user_uuid: req.customer.uuid, access_token: req.body.access_token})
             item.sync();
@@ -68,7 +69,7 @@ exports.add_item = async (req, res) => {
             data: customer
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message
@@ -107,7 +108,7 @@ exports.login = async (req, res) => {
             data: customer
         })
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "failure",
             message: err.message
@@ -131,7 +132,7 @@ exports.create_customer = async (req, res) => {
         });
         new_customer.sync();
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message
@@ -169,7 +170,7 @@ exports.get_customer_banks = async (req, res) => {
             data: banks
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message
@@ -185,7 +186,7 @@ exports.update_all = async (req, res) => {
             data: {}
         })
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message

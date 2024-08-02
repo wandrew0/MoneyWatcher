@@ -1,4 +1,6 @@
+const logger = require("../utils/logger");
 const Rule = require("./../models/rule_model");
+
 
 exports.get_rules = async (req, res) => {
     try {
@@ -9,7 +11,7 @@ exports.get_rules = async (req, res) => {
             data: rules
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message
@@ -31,7 +33,7 @@ exports.create_rule = async (req, res) => {
             data: new_rule
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message
@@ -50,7 +52,7 @@ exports.delete_rule = async (req, res) => {
             status: "success"
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err.message
@@ -65,7 +67,7 @@ exports.update_rule = async (req, res) => {
             data: "unimplemented"
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             mesage: err.message

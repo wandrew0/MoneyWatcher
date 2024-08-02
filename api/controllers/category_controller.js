@@ -30,7 +30,7 @@ exports.get_categories = async (req, res) => {
             data: categories
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err
@@ -42,13 +42,13 @@ exports.get_custom = async (req, res) => {
     try {
         const categories = {};
         categories.custom = (await Category.find({ user_uuid: req.customer.uuid })).map((cat) => cat.name);
-        console.log(req.customer.uuid);
+        logger.debug(req.customer.uuid);
         res.status(200).json({
             status: "success",
             data: categories
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err
@@ -65,7 +65,7 @@ exports.create_category = async (req, res) => {
             data: category
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err

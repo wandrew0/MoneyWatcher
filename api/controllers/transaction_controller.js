@@ -1,3 +1,4 @@
+const logger = require("../utils/logger");
 const Transaction = require("./../models/transaction_model");
 const Merchant = require("./../models/merchant_model");
 
@@ -56,7 +57,7 @@ exports.get_transactions = async (req, res) => {
             }
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err

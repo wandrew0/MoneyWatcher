@@ -1,4 +1,5 @@
 const Merchant = require("./../models/merchant_model");
+const logger = require("../utils/logger");
 
 exports.get_merchants = async (req, res) => {
     try {
@@ -9,7 +10,7 @@ exports.get_merchants = async (req, res) => {
             data: merchants
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err
@@ -29,7 +30,7 @@ exports.update_merchants = async (req, res) => {
             data: merchant
         });
     } catch (err) {
-        console.log(err);
+        logger.error(err);
         res.status(400).json({
             status: "fail",
             message: err
