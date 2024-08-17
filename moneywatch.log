@@ -1,0 +1,27 @@
+2024-08-16 18:11:57 [info]: Running on port 3000
+2024-08-16 18:11:57 [info]: db connection successful
+2024-08-16 18:20:47 [info]: Running on port 3000
+2024-08-16 18:20:47 [info]: db connection successful
+2024-08-16 18:20:53 [info]: Running on port 3000
+2024-08-16 18:20:53 [info]: db connection successful
+2024-08-16 19:22:32 [info]: Running on port 3000
+2024-08-16 19:22:32 [info]: db connection successful
+2024-08-16 19:22:52 [debug]: da4c09c4-7bea-4e1a-9ac8-8f82bdab195c
+2024-08-16 19:22:52 [debug]: da4c09c4-7bea-4e1a-9ac8-8f82bdab195c
+2024-08-16 19:30:50 [info]: Running on port 3000
+2024-08-16 19:30:50 [info]: db connection successful
+2024-08-16 19:31:11 [info]: Running on port 3000
+2024-08-16 19:31:11 [info]: db connection successful
+2024-08-16 19:58:25 [info]: Running on port 3000
+2024-08-16 19:58:25 [info]: db connection successful
+2024-08-16 19:58:31 [debug]: caching thingies and setting lock
+2024-08-16 19:58:31 [debug]: token:access-sandbox-a5cde6f5-399e-44b6-b5f0-02694883e3f5
+2024-08-16 19:58:32 [debug]: token:access-sandbox-653263ca-5185-482f-8c99-04b93e24951e
+2024-08-16 19:58:32 [debug]: token:access-sandbox-f9f715d9-3a17-4efe-8a05-68ee19bf9720
+2024-08-16 19:58:33 [debug]: token:access-sandbox-25a8c98b-7350-4ecf-8cf9-12529d6b5a4f
+2024-08-16 19:58:33 [debug]: token:access-sandbox-9dbf2542-c07a-44e4-a3a0-ab1e3468f455
+2024-08-16 19:58:37 [warn]: uuid:da4c09c4-7bea-4e1a-9ac8-8f82bdab195c already has access token:access-sandbox-653263ca-5185-482f-8c99-04b93e24951e
+2024-08-16 19:59:49 [info]: Running on port 3000
+2024-08-16 19:59:49 [info]: db connection successful
+2024-08-16 20:00:01 [info]: Running on port 3000
+2024-08-16 20:00:01 [info]: db connection successful

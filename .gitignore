@@ -5,3 +5,5 @@ node_modules
 .class
 .idea
 app.log
+moneywatcher.log
+bankaccounts/*.txt

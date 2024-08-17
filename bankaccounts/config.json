@@ -2,7 +2,7 @@
   "name" : "John Smith",
   "types" : ["credit"],
   "transaction_count" : 4,
-  "start_day" : "2024-06-15",
-  "days" : 50,
-  "out" : "50.txt"
+  "start_day" : "2024-08-01",
+  "days" : 30,
+  "out" : "30.txt"
 }

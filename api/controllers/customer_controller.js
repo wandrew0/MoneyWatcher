@@ -5,32 +5,56 @@ const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const Item = require("../models/item_model");
+const { CronJob } = require("cron");
 
-const tokens = fs.readFileSync(`${__dirname}/../data/tokens.txt`).toString().split("\n");
+const tokens = fs
+    .readFileSync(`${__dirname}/../data/tokens.txt`)
+    .toString()
+    .split("\n");
 
-setInterval(() => {
-    // console.log("EMAIL SEND");
-    // console.log(process.env.SYNC_INTERVAL_SECONDS * 1000);
-}, process.env.SYNC_INTERVAL_SECONDS * 1000);
+const job = new CronJob(
+    "00 00 00 * * *",
+    async () => {
+        try {
+            logger.debug("starting sync");
+            await Customer.sync_all();
+            await Customer.alert_all();
+            logger.debug("finished sync");
+        } catch (err) {
+            logger.error(err);
+        }
+    },
+    null,
+    true,
+    "America/Los_Angeles"
+);
 
-const sign_token = uuid => {
+const sign_token = (uuid) => {
     return jwt.sign({ uuid: uuid }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
     });
-}
+};
 
 exports.protect = async (req, res, next) => {
     try {
         let token;
-        if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        if (
+            req.headers.authorization &&
+            req.headers.authorization.startsWith("Bearer")
+        ) {
             token = req.headers.authorization.split(" ")[1];
         }
         if (!token) {
             throw new Error("not logged in");
         }
-        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+        const decoded = await promisify(jwt.verify)(
+            token,
+            process.env.JWT_SECRET
+        );
 
-        const customer = await Customer.findOne({ uuid: decoded.uuid });
+        const customer = await Customer.findOne({
+            uuid: decoded.uuid
+        });
         if (!customer) {
             throw new Error("user doesn't exist");
         }
@@ -39,7 +63,7 @@ exports.protect = async (req, res, next) => {
             throw new Error("password changed");
         }
 
-        req.customer = customer
+        req.customer = customer;
         next();
     } catch (err) {
         logger.error(err);
@@ -48,20 +72,35 @@ exports.protect = async (req, res, next) => {
             message: err.message
         });
     }
-}
+};
 
 exports.add_item = async (req, res) => {
     try {
-        const customer = await Customer.findOne({ uuid: req.customer.uuid });
+        const customer = await Customer.findOne({
+            uuid: req.customer.uuid
+        });
 
         if (!req.body.access_token) {
             throw new Error("missing access_token");
         }
 
-        if (await Item.exists({ user_uuid: req.customer.uuid, access_token: req.body.access_token })) {
-            logger.warn("uuid:" + req.customer.uuid + " already has access token:" + req.body.access_token);
+        if (
+            await Item.exists({
+                user_uuid: req.customer.uuid,
+                access_token: req.body.access_token
+            })
+        ) {
+            logger.warn(
+                "uuid:" +
+                    req.customer.uuid +
+                    " already has access token:" +
+                    req.body.access_token
+            );
         } else {
-            const item = await Item.create({user_uuid: req.customer.uuid, access_token: req.body.access_token})
+            const item = await Item.create({
+                user_uuid: req.customer.uuid,
+                access_token: req.body.access_token
+            });
             item.sync();
         }
         res.status(200).json({
@@ -75,7 +114,7 @@ exports.add_item = async (req, res) => {
             message: err.message
         });
     }
-}
+};
 
 exports.login = async (req, res) => {
     try {
@@ -90,9 +129,17 @@ exports.login = async (req, res) => {
             return;
         }
 
-        const customer = await Customer.findOne({ email }).select("+password");
+        const customer = await Customer.findOne({ email }).select(
+            "+password"
+        );
 
-        if (!customer || !await customer.verify_password(password, customer.password)) {
+        if (
+            !customer ||
+            !(await customer.verify_password(
+                password,
+                customer.password
+            ))
+        ) {
             // console.log("wrong email or password");
             res.status(401).json({
                 status: "fail",
@@ -106,15 +153,15 @@ exports.login = async (req, res) => {
             status: "success",
             token,
             data: customer
-        })
+        });
     } catch (err) {
         logger.error(err);
         res.status(400).json({
             status: "failure",
             message: err.message
-        })
+        });
     }
-}
+};
 
 exports.create_customer = async (req, res) => {
     try {
@@ -158,7 +205,9 @@ exports.get_all_customers = async (req, res) => {
 exports.get_customer_banks = async (req, res) => {
     try {
         //console.log("get_customer_banks:" + req.customer.uuid);
-        const items = await Item.find({user_uuid: req.customer.uuid})
+        const items = await Item.find({
+            user_uuid: req.customer.uuid
+        });
         //console.log("bank accounts:" + items);
         const banks = items.map((item) => {
             //console.log("one item:" + item.access_token);
@@ -176,7 +225,7 @@ exports.get_customer_banks = async (req, res) => {
             message: err.message
         });
     }
-}
+};
 
 exports.update_all = async (req, res) => {
     try {
@@ -184,7 +233,7 @@ exports.update_all = async (req, res) => {
         res.status(200).json({
             status: "success",
             data: {}
-        })
+        });
     } catch (err) {
         logger.error(err);
         res.status(400).json({
@@ -192,4 +241,4 @@ exports.update_all = async (req, res) => {
             message: err.message
         });
     }
-}
+};

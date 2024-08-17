@@ -16,7 +16,9 @@ router
         customer_controller.get_customer_banks
     );
 
-router.route("/update").post(customer_controller.update_all);
+if (process.env.NODE_ENV === "development") {
+    router.route("/update").post(customer_controller.update_all);
+}
 
 router
     .route("/item")
