@@ -8,7 +8,6 @@ const email = require("./../utils/email");
 const Item = require("./item_model");
 const logger = require("../utils/logger");
 
-
 const customer_schema = new mongoose.Schema({
     first_name: {
         type: String,
@@ -93,15 +92,15 @@ customer_schema.pre("save", async function () {
 
 customer_schema.methods.verify_password = async (candidate_password, real_password) => {
     return await bcrypt.compare(candidate_password, real_password);
-}
+};
 
 customer_schema.methods.changed_password_after = function (JWTTimestamp) {
     if (this.password_changed_at) {
-        const changed_timestamp = parseInt(this.password_changed_at.getTime() / 1000, 10)
+        const changed_timestamp = parseInt(this.password_changed_at.getTime() / 1000, 10);
         return changed_timestamp > JWTTimestamp;
     }
     return false;
-}
+};
 
 customer_schema.methods.sync = async function () {
     try {
@@ -130,7 +129,7 @@ customer_schema.methods.sync = async function () {
     } catch (err) {
         throw err;
     }
-}
+};
 
 customer_schema.statics.sync_all = async function () {
     try {
@@ -143,30 +142,39 @@ customer_schema.statics.sync_all = async function () {
     } catch (err) {
         throw err;
     }
-}
+};
 
 customer_schema.statics.alert_all = async function () {
     try {
         const customers = await Customer.find();
+        const promises = [];
         for (const customer of customers) {
-            customer.alert();
+            promises.push(customer.alert());
         }
+        await Promise.all(promises);
     } catch (err) {
         throw err;
     }
-}
+};
 
 customer_schema.methods.alert = async function () {
     try {
         const rules = await Rule.find({ user_uuid: this.uuid });
-        await rules.alert();
+        const promises = [];
+        for (const rule of rules) {
+            promises.push(rule.alert());
+        }
+        await Promise.all(promises);
     } catch (err) {
         throw err;
     }
-}
+};
 
 async function create_transactions(user_uuid, item_token, cursor) {
-    const { next_cursor, transactions } = await plaid.get_all_transactions(item_token, cursor);
+    const { next_cursor, transactions } = await plaid.get_all_transactions(
+        item_token,
+        cursor
+    );
     const map = new Map();
     for (const transaction of transactions) {
         const trans_obj = {
@@ -179,7 +187,7 @@ async function create_transactions(user_uuid, item_token, cursor) {
             iso_currency_code: transaction["iso_currency_code"],
             // ...transaction["merchant_name"] && { merchant_name: transaction["merchant_name"] },
             name: transaction["name"],
-            ...transaction["logo_url"] && { logo_url: transaction["logo_url"] },
+            ...(transaction["logo_url"] && { logo_url: transaction["logo_url"] }),
             // ...transaction["personal_finance_category"] && {
             //     enrich_category: {
             //         detailed: transaction["personal_finance_category"]["detailed"],
@@ -199,8 +207,8 @@ async function create_transactions(user_uuid, item_token, cursor) {
             //     }
             // });
         }
-        Transaction.create(trans_obj).catch(
-            (err) => logger.warn("ignored duplicate\n {err}")
+        Transaction.create(trans_obj).catch((err) =>
+            logger.warn("ignored duplicate\n {err}")
         );
     }
     return { next_cursor, map };

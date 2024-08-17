@@ -7,10 +7,7 @@ const mongoose = require("mongoose");
 const Item = require("../models/item_model");
 const { CronJob } = require("cron");
 
-const tokens = fs
-    .readFileSync(`${__dirname}/../data/tokens.txt`)
-    .toString()
-    .split("\n");
+const tokens = fs.readFileSync(`${__dirname}/../data/tokens.txt`).toString().split("\n");
 
 const job = new CronJob(
     "00 00 00 * * *",
@@ -38,19 +35,13 @@ const sign_token = (uuid) => {
 exports.protect = async (req, res, next) => {
     try {
         let token;
-        if (
-            req.headers.authorization &&
-            req.headers.authorization.startsWith("Bearer")
-        ) {
+        if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
             token = req.headers.authorization.split(" ")[1];
         }
         if (!token) {
             throw new Error("not logged in");
         }
-        const decoded = await promisify(jwt.verify)(
-            token,
-            process.env.JWT_SECRET
-        );
+        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
         const customer = await Customer.findOne({
             uuid: decoded.uuid
@@ -129,17 +120,9 @@ exports.login = async (req, res) => {
             return;
         }
 
-        const customer = await Customer.findOne({ email }).select(
-            "+password"
-        );
+        const customer = await Customer.findOne({ email }).select("+password");
 
-        if (
-            !customer ||
-            !(await customer.verify_password(
-                password,
-                customer.password
-            ))
-        ) {
+        if (!customer || !(await customer.verify_password(password, customer.password))) {
             // console.log("wrong email or password");
             res.status(401).json({
                 status: "fail",
@@ -230,6 +213,7 @@ exports.get_customer_banks = async (req, res) => {
 exports.update_all = async (req, res) => {
     try {
         await Customer.sync_all();
+        await Customer.alert_all();
         res.status(200).json({
             status: "success",
             data: {}
