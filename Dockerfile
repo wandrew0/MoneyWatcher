@@ -1,6 +1,6 @@
 FROM mongo:latest AS mongo
 RUN apt-get update && \
-    apt install curl && \
+    apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_21.x | bash - && \
     apt-get install -y nodejs && \
     apt-get install -y openssh-server && \
