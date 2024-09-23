@@ -107,6 +107,9 @@ change the appropriate configuration values in config.env according to your loca
 You will be able to connect to localhost:3001 for the UI and localhost:3000 for the API backend.
 
 ## Run (Docker container in AWS)
+aws is running on amd64 processor, need to specify platform
+`docker buildx create --use`
+`docker buildx build --platform linux/amd64 -t moneywatcher .`
 `docker login`
 
 `docker tag moneywatcher:latest andrew2021wang/moneywatcher:latest`
