@@ -108,8 +108,11 @@ You will be able to connect to localhost:3001 for the UI and localhost:3000 for 
 
 ## Run (Docker container in AWS)
 aws is running on amd64 processor, need to specify platform
-`docker buildx create --use`
-`docker buildx build --platform linux/amd64 -t moneywatcher .`
+
+`docker buildx create --use` enable multiplatform build
+
+`docker buildx build --platform linux/amd64 -t moneywatcher .` build on linux/amd64
+
 `docker login`
 
 `docker tag moneywatcher:latest andrew2021wang/moneywatcher:latest`
