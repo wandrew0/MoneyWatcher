@@ -111,7 +111,7 @@ aws is running on amd64 processor, need to specify platform
 
 `docker buildx create --use` enable multiplatform build
 
-`docker buildx build --platform linux/amd64 -t moneywatcher .` build on linux/amd64
+`docker buildx build --platform linux/amd64 -t moneywatcher --load .` build on linux/amd64
 
 `docker login`
 
