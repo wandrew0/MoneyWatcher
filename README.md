@@ -18,11 +18,18 @@ MoneyWatcher is a web application that tracks and monitors a user's bank transac
 MoneyWatcher is built with the MERN stack. The backend server is implemented using Node.js and Express.js. It manages data in MongoDB and exposes its functionalities through REST API. I wrote a simple React-based UI to communicate with the server.
 
 ## Dependencies
-without Docker: Node.js, npm, and MongoDB
+without Docker: Node.js 22.12 or newer (Node.js 24 LTS recommended), npm, and MongoDB
 
 with Docker: Docker
 ## Build
-`npm install`
+`npm ci`
+
+`npm run build` creates the production frontend in `build/`. The frontend uses
+Vite; React components use the `.jsx` extension. `npm run preview` serves the
+production build locally on port 3001 for verification.
+
+`npm test` runs backend dependency compatibility checks without MongoDB, Plaid,
+or email credentials. `npm audit` checks both runtime and development dependencies.
 ## Config
 The backend code references environment variables set in `api/config.env.template`. If you wish to run moneywatcher locally, please `cp api/config.env.template api/config.env` and set the appropriate values in config.env.
 ```
@@ -86,7 +93,7 @@ Before running any of the javascript code, make sure that your environment varia
 
 `npm run api` for the api on port 3000 
 
-`npm run frontend` (in a new terminal) for the frontend on port 3001, which should automatically open your browser. If it doesn't, navigate to http://localhost:3001.
+`npm run frontend` (in a new terminal) for the frontend on port 3001. Navigate to http://localhost:3001.
 
 ## Run (with Docker)
 **WARNING:** MoneyWatcher will NOT run properly without environment variables PLAID_CLIENT_ID and PLAID_SECRET set in `/api/config.env` 

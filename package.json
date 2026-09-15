@@ -4,14 +4,18 @@
   "description": "watches your money",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test test/*.test.cjs",
     "api": "nodemon ./api/server.js",
-    "frontend": "PORT=3001 react-scripts start"
+    "frontend": "vite --host 0.0.0.0 --port 3001 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 3001 --strictPort"
   },
   "author": "Andrew Wang",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "vite": "^8.3.0",
+    "@vitejs/plugin-react": "^6.0.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -19,18 +23,15 @@
     "cors": "^2.8.5",
     "cron": "^3.1.7",
     "dotenv": "^16.3.1",
-    "esm": "^3.2.25",
-    "express": "^4.18.2",
-    "handlebars-loader": "^1.7.3",
+    "express": "^4.22.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.2.0",
-    "morgan": "^1.10.0",
-    "nodemailer": "^6.9.8",
+    "mongoose": "^8.24.4",
+    "morgan": "^1.12.1",
+    "nodemailer": "^10.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.1",
-    "react-router-dom": "^6.21.2",
-    "react-scripts": "^5.0.1",
+    "react-router-dom": "^7.18.4",
     "slugify": "^1.6.6",
     "winston": "^3.13.1"
   },
@@ -45,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

@@ -1,7 +1,7 @@
 FROM mongo:latest AS mongo
 RUN apt-get update && \
     apt-get install -y curl && \
-    curl -fsSL https://deb.nodesource.com/setup_21.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
     apt-get install -y nodejs && \
     apt-get install -y openssh-server && \
     apt-get install -y less && \
@@ -17,7 +17,7 @@ WORKDIR /usr/src/app
 COPY package*.json .
 RUN npm config rm proxy
 RUN npm config rm https-proxy
-RUN npm install
+RUN npm ci
 COPY . .
 RUN chmod u+x start.sh
 ENV WORK_DIR=/usr/src/app
