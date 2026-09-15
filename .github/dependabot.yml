@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # Keep security fixes grouped without adding routine version-update PRs.
+    open-pull-requests-limit: 0
+    groups:
+      npm-security:
+        applies-to: security-updates
+        patterns: ['*']
+  - package-ecosystem: maven
+    directory: /testdata
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    groups:
+      maven-security:
+        applies-to: security-updates
+        patterns: ['*']

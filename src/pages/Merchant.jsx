@@ -4,8 +4,8 @@ import MainContext from "./MainContext"
 import { Link, useNavigate } from 'react-router-dom'
 import Categories from "../resources/Categories.js"
 import '../css/styles.css'
-import BlueLink from "./BlueLink.js";
-import NotLoggedInError from "./NotLoggedInError.js";
+import BlueLink from "./BlueLink.jsx";
+import NotLoggedInError from "./NotLoggedInError.jsx";
 
 
 
